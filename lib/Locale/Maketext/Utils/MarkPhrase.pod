@@ -11,12 +11,12 @@ Locale::Maketext::Utils::MarkPhrase - explicitly mark a phrase as translatable
     
     # $result = 'Hello World';
     $result = translatable('Hello World');
-
+    
 =head1 DESCRIPTION
 
-Lets say you typically harvest phrases from your code by looking for calls to maketext() or text().
+Lets say you typically harvest phrases from your code by looking for calls to maketext() or lextext().
 
-Sometimes you need to have a string in code that does not have your locale system in place so you can’t use maketext() or text() for that purpose. 
+Sometimes you need to have a string in code that does not have your locale system in place so you can’t use maketext() or lextext() for that purpose. 
 
 If you made fake ones you’d either have untranslated/uncompiled results or the consumer of the result would have to fiogure out if its good or if still needs processing.
 

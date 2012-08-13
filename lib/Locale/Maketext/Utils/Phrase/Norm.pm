@@ -360,7 +360,11 @@ Analyze, report, and normalize a maketext style phrase based on rules organized 
 
 =head3 new_source()
 
-Create a new object with all the filters initialized.
+A “source phrase” is a phrase (suitable for a call to maketext()) in the main locale’s language that we intend to be localizable.
+
+Typically this is the key of a lexicon’s hash but it can be the value if the main locale lexicon’s key is an “Arbitrary Key”, that is, if the value is different from the key in the main locale’s lexicon.
+
+new_source() creates a new object with all the filters initialized for source phrases.
 
 Giving no arguments means it will employ all of the default filter modules (documented in L</"DEFAULT FILTERS">).
 
@@ -422,7 +426,9 @@ new_source() carp()s and returns false if there is some sort of failure (documen
 
 =head3 new_target()
 
-Just like new_source() but uses a subset of the L</"DEFAULT FILTERS"> that apply to translations.
+A “target phrase” is the translated version of a given source phrase. This is the value of a non-main-locale lexicon’s hash.
+
+new_target() is just like new_source() but uses a subset of the L</"DEFAULT FILTERS"> that apply to translations.
 
 Currently the exclusion of L<BeginUpper|Locale::Maketext::Utils::Phrase::Norm::BeginUpper> and L<EndPunc|Locale::Maketext::Utils::Phrase::Norm::EndPunc> from the L</"DEFAULT FILTERS"> is what makes up this object.
 
