@@ -131,20 +131,23 @@ sub init {
     );
 }
 
-# TODO:
-# *makevar = *maketext; and friends ...
-# sub __WS {
-#     my ($string) = @_;
-#
-#     $string =~ s/\s+/ /g;
-#     $string =~ s/\A(?:\x20|\xc2\xa0)+//g;      # remove leading white space
-#     $string =~ s/(?:\x20|\xc2\xa0){2,}/ /g;    # collapse multiple internal white space
-#     $string =~ s/(?:\x20|\xc2\xa0)+\z//g;      # remove trailing white space
-#     if ( substr( $string, 0, 3 ) eq "\xE2\x80\xA6" ) {
-#         $string = " $string";
-#     }
-#     return $string;
-# }
+*makevar = \&maketext;    # TODO 0.36: makeexp() (or something else) instead?, POD/tests
+
+# TODO 0.36 (name? export, do meth/function or just funtion?, etc), needs POD and tests once finalized
+sub _NWS {
+
+    # $lh->_NWS($str) || _NWS($str)
+    my $string = @_ > 1 ? $_[1] : $_[0];
+
+    $string =~ s/\s+/ /g;
+    $string =~ s/\A(?:\x20|\xc2\xa0)+//g;      # remove leading white space
+    $string =~ s/(?:\x20|\xc2\xa0){2,}/ /g;    # collapse multiple internal white space
+    $string =~ s/(?:\x20|\xc2\xa0)+\z//g;      # remove trailing white space
+    if ( substr( $string, 0, 3 ) eq "\xE2\x80\xA6" ) {
+        $string = " $string";
+    }
+    return $string;
+}
 
 sub makethis {
     my ( $lh, $phrase, @phrase_args ) = @_;
@@ -1473,6 +1476,19 @@ sub maketext_plain_context {
     $lh->set_context($cur);
     return $res;
 }
+
+# TODO 0.36: how crazy do we want to go with context specific versions of maketext()ish methods?
+# *makevar_html_context = \&maketext_html_context;
+# *makevar_ansi_context = \&maketext_ansi_context;
+# *makeavr_plain_context = \&maketext_plain_context;
+#
+# sub makethis_html_context {};
+# sub makethis_ansi_context {};
+# sub makethis_plain_context {};
+#
+# sub makethis_base_html_context {};
+# sub makethis_base_ansi_context {};
+# sub makethis_base_plain_context {};
 
 #### / output context methods ###
 

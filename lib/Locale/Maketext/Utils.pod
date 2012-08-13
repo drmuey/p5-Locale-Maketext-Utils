@@ -248,6 +248,28 @@ Like makethis() but uses the base class as the phrase compiler instead of the ob
 
 This is usful in testing when you want consistent semantics on arbitrary objects.
 
+=head2 $lh->makevar()
+
+This is an alias to maketext(). Its sole purpose is to be used to semantically indicate that the source code does not contain a translatable string in the call to maketext().
+
+For example:
+
+    $lh->maketext('Hello World') 
+    
+It is easy to tell that we need to provide translations for 'Hello World'. But given:
+
+    $lh->maketext($api_rv->{'string'}) 
+
+It is not easy to determine what $api_rv->{'string'} is in order to pass it on to the translation team.
+
+However if we do that like this:
+
+     my $string = translatable('Hello World'); # See Locale::Maketext::Utils::MarkPhrase
+     …
+     $lh->makevar($api_rv->{'string'})
+
+Then the parser can simply ignore the call to makevar() and find the value it is interested in via translatable()
+
 =head2 $lh->get_asset()
 
 Helps you find an asset for a locale based on the locale's fallback.
