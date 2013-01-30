@@ -4,7 +4,6 @@ Revision history for Perl extension Locale::Maketext::Utils.
     - rt 78889 - add blurb about source/target phrases to new_source()/new_target() POD
     - Update MarkPhrase POD to reference lextext() instead of the deprecated text()
     - Add makevar() method
-    - Add _NWS() method/function
     
 0.35  Thu Aug  9 15:30:52 2012
     - rt 78871 - rename normalizing object constructors

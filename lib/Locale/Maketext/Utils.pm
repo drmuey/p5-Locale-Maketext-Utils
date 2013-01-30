@@ -133,21 +133,21 @@ sub init {
 
 *makevar = \&maketext;    # TODO 0.36: makeexp() (or something else) instead?, POD/tests
 
-# TODO 0.36 (name? export, do meth/function or just funtion?, etc), needs POD and tests once finalized
-sub _NWS {
-
-    # $lh->_NWS($str) || _NWS($str)
-    my $string = @_ > 1 ? $_[1] : $_[0];
-
-    $string =~ s/\s+/ /g;
-    $string =~ s/\A(?:\x20|\xc2\xa0)+//g;      # remove leading white space
-    $string =~ s/(?:\x20|\xc2\xa0){2,}/ /g;    # collapse multiple internal white space
-    $string =~ s/(?:\x20|\xc2\xa0)+\z//g;      # remove trailing white space
-    if ( substr( $string, 0, 3 ) eq "\xE2\x80\xA6" ) {
-        $string = " $string";
-    }
-    return $string;
-}
+# TODO (name? export, do meth/function or just funtion?, etc), needs POD and tests once finalized
+# sub _TWS {
+# 
+#     # $lh->_NWS($str) || _NWS($str)
+#     my $string = @_ > 1 ? $_[1] : $_[0];
+# 
+#     $string =~ s/\s+/ /g;
+#     $string =~ s/\A(?:\x20|\xc2\xa0)+//g;      # remove leading white space
+#     $string =~ s/(?:\x20|\xc2\xa0){2,}/ /g;    # collapse multiple internal white space
+#     $string =~ s/(?:\x20|\xc2\xa0)+\z//g;      # remove trailing white space
+#     if ( substr( $string, 0, 3 ) eq "\xE2\x80\xA6" ) {
+#         $string = " $string";
+#     }
+#     return $string;
+# }
 
 sub makethis {
     my ( $lh, $phrase, @phrase_args ) = @_;
