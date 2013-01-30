@@ -131,7 +131,8 @@ sub init {
     );
 }
 
-*makevar = \&maketext;    # TODO 0.36: makeexp() (or something else) instead?, POD/tests
+# better way to alias things in an ISA package?
+*makevar = *Cpanel::CPAN::Locale::Maketext::maketext;
 
 # TODO (name? export, do meth/function or just funtion?, etc), needs POD and tests once finalized
 # sub _TWS {

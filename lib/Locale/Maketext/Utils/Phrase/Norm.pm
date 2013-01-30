@@ -19,8 +19,8 @@ sub new_target {
     my $conf = ref( $_[-1] ) eq 'HASH' ? pop(@_) : {};
 
     # IF YOU CHANGE THIS CHANGE THE “new_target()” POD SECTION ALSO
-    $conf->{'exclude_filters'}{'BeginUpper'} = 1;                                                                                    # IF YOU CHANGE THIS CHANGE THE “new_target()” POD SECTION ALSO
-    $conf->{'exclude_filters'}{'EndPunc'}    = 1;                                                                                    # IF YOU CHANGE THIS CHANGE THE “new_target()” POD SECTION ALSO
+    $conf->{'exclude_filters'}{'BeginUpper'} = 1;    # IF YOU CHANGE THIS CHANGE THE “new_target()” POD SECTION ALSO
+    $conf->{'exclude_filters'}{'EndPunc'}    = 1;    # IF YOU CHANGE THIS CHANGE THE “new_target()” POD SECTION ALSO
 
     # IF YOU CHANGE THIS CHANGE THE “new_target()” POD SECTION ALSO
 
@@ -626,19 +626,13 @@ The included default filters are listed below in the order they are executed by 
 
 =item L<BeginUpper|Locale::Maketext::Utils::Phrase::Norm::BeginUpper>
 
-Falls under L</extra filters> currently.
-
 =item L<EndPunc|Locale::Maketext::Utils::Phrase::Norm::EndPunc>
 
 Falls under L</extra filters> currently.
 
 =item L<Consider|Locale::Maketext::Utils::Phrase::Norm::Consider>
 
-Has one check that falls under L</extra filters> currently.
-
 =item L<Escapes|Locale::Maketext::Utils::Phrase::Norm::Escapes>
-
-Falls under L</extra filters> currently.
 
 =item L<Compiles|Locale::Maketext::Utils::Phrase::Norm::Compiles>
 
