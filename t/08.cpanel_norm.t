@@ -241,18 +241,20 @@ run_32_tests(
     'original'       => 'wazzup?',
     'modified'       => 'wazzup?',
     'all_violations' => {
-        'special' => [
-            'Does not start with an uppercase letter, ellipsis preceded by space, or bracket notation.',
-        ],
-        'default' => undef,    # undef means "same as special"
+        'special' => [],
+        'default' => [],
     },
-    'all_warnings'      => \%global_all_warnings,
+    'all_warnings'      => {
+        'special' => ['Does not start with an uppercase letter, ellipsis preceded by space, or bracket notation.'],
+        'default' => undef,
+    },
     'filter_violations' => undef,                      # undef means "same as all_violations"
-    'filter_warnings'   => \%global_filter_warnings,
+    'filter_warnings'   =>undef,
     'return_value'      => {
-        'special' => [ 0, 1,                             0 ],
+        'special' => [ -1, 0,                             1 ],
         'default' => undef, # undef means "same as special"
     },
+    'get_status_is_warnings'        => 1,
     'filter_does_not_modify_string' => 1,
     'diag'                          => 0,
 );
@@ -262,15 +264,15 @@ run_32_tests(
     $global_all_warnings{'special'} = \@{ $global_all_warnings{'special'} };
     $global_all_warnings{'default'} = \@{ $global_all_warnings{'default'} };
 
-    push @{ $global_all_warnings{'special'} }, 'Non title/label does not end with some sort of puncuation or bracket notation.';
-    push @{ $global_all_warnings{'default'} }, 'Non title/label does not end with some sort of puncuation or bracket notation.';
+    push @{ $global_all_warnings{'special'} }, 'Non title/label does not end with some sort of punctuation or bracket notation.';
+    push @{ $global_all_warnings{'default'} }, 'Non title/label does not end with some sort of punctuation or bracket notation.';
 
     local %global_filter_warnings = %global_filter_warnings;
     $global_filter_warnings{'special'} = \@{ $global_filter_warnings{'special'} };
     $global_filter_warnings{'default'} = \@{ $global_filter_warnings{'default'} };
 
-    push @{ $global_filter_warnings{'special'} }, 'Non title/label does not end with some sort of puncuation or bracket notation.';
-    push @{ $global_filter_warnings{'default'} }, 'Non title/label does not end with some sort of puncuation or bracket notation.';
+    push @{ $global_filter_warnings{'special'} }, 'Non title/label does not end with some sort of punctuation or bracket notation.';
+    push @{ $global_filter_warnings{'default'} }, 'Non title/label does not end with some sort of punctuation or bracket notation.';
 
     run_32_tests(
         'filter_name'    => 'EndPunc',

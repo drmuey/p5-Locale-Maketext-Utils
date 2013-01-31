@@ -11,7 +11,7 @@ sub normalize_maketext_string {
     if ( ${$string_sr} !~ m/\A(?:[A-Z]|(?:\[[^\]]+)|(?: …))/ ) {
 
         # ${$string_sr} = "[comment,beginning needs to be upper case ?]" . ${$string_sr};
-        $filter->add_violation('Does not start with an uppercase letter, ellipsis preceded by space, or bracket notation.');
+        $filter->add_warning('Does not start with an uppercase letter, ellipsis preceded by space, or bracket notation.');
     }
 
     # TODO (phrase obj?) If it starts w/ bracket notation will it be appropriately begun when rendered?
@@ -43,6 +43,10 @@ Incorrect beginning case could be a sign that partial phrases are in use or an e
 
 =head1 possible violations
 
+None
+
+=head1 possible warnings
+
 =over 4
 
 =item Does not start with an uppercase letter, ellipsis preceded by space, or bracket notation.
@@ -50,7 +54,3 @@ Incorrect beginning case could be a sign that partial phrases are in use or an e
 Problem should be self explanatory.
 
 =back
-
-=head1 possible warnings
-
-None
