@@ -69,7 +69,7 @@ The only single white space characters allowed are normal space and non-break-sp
 
 =over 4
 
-=item * A tiny change in white-space[-ish] characters will make a phrase lookup fail errouneously. 
+=item * A tiny change in white-space[-ish] characters will make a phrase lookup fail errouneously.
 
 =item * The only other purpose of allowing characters like this would be formatting which should not be part of a phrase.
 
@@ -79,7 +79,7 @@ The only single white space characters allowed are normal space and non-break-sp
 
 =item * Since it is not a translatable entity translators are likley to miss it and break your format.
 
-=item * Same text with different formatting becomes a new, redundant, phrase. 
+=item * Same text with different formatting becomes a new, redundant, phrase.
 
 =back
 
@@ -91,7 +91,7 @@ Doing internal formatting via bracket notation’s output() methods address the 
 
 =back
 
-That being the case we simplify consistently by using single space and non-break-space charcaters inside the string 
+That being the case we simplify consistently by using single space and non-break-space charcaters inside the string
 (and the beginning if it starts with an L<ellipsis|Locale::Maketext::Utils::Phrase::Norm::Ellipsis>).
 
 =head2 possible violations
@@ -122,7 +122,7 @@ These are removed.
 
 These are collapsed into a single space.
 
-=back 
+=back
 
 =head2 possible warnings
 

@@ -47,7 +47,7 @@ If you get false positives then that only goes to help highlight how ambiguity a
 
 A sequence of \xe2\x98\xba\xe2\x80\xa6 will be replaced w/ [comment,grapheme “\xe2\x98\xba\xe2\x80\xa6”]
 
-=back 
+=back
 
 =head1 possible warnings
 

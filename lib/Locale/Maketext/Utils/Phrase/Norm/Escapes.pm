@@ -60,7 +60,7 @@ If you get false positives then that only goes to help highlight how ambiguity a
 
 A sequence of \n will be replaced w/ [comment,escaped sequence “n”], \" [comment,escaped sequence “"”], etc
 
-=back 
+=back
 
 =head1 possible warnings
 

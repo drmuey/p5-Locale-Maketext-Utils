@@ -72,7 +72,7 @@ Problem should be self explanatory. The former gets replaced with the latter.
 
 Problem should be self explanatory. Spaces get added as needed.
 
-=back 
+=back
 
 =head1 possible warnings
 

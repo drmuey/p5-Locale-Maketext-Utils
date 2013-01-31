@@ -50,7 +50,7 @@ Allowing markup characters in the phrase is problematic for a number of reasons,
 
 =item * Their presence could unpredictably break markup or other syntax.
 
-=item * Translators are likely to unwittingly change/break markup unless you take extra precautions (e.g. more <ph> handling of text/html ctype in XLIFF, yikes!). 
+=item * Translators are likely to unwittingly change/break markup unless you take extra precautions (e.g. more <ph> handling of text/html ctype in XLIFF, yikes!).
 
 =item * Markup could also make the translatable part harder for them to translate.
 
@@ -78,7 +78,7 @@ Turns <>'" into appropriate bracket notation.
 
 & is handled in its own driver.
 
-=back 
+=back
 
 =head1 possible warnings
 

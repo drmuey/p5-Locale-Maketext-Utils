@@ -93,7 +93,7 @@ The idea behind it is that a phrase that is entirely bracket notation is a sure 
 
 For example:
 
-=over 4 
+=over 4
 
 =item method
 
@@ -129,7 +129,7 @@ or if you prefer to keep the variant–pair as one unit:
 =item Hard coded URLs can be a maintenance nightmare, why not pass the URL in so the phrase does not change if the URL does
 
      $lh->maketext('You can [output,url,http://support.example.com,visit our support page] for further assistance.');
-     
+
 What happens when support.example.com changes to custcare.example.com? You have to change, not only the caller but the lexicons and translations, ick!
 
 Then after you do that your boss says, oh wait actually it needs to be customer.example.com …

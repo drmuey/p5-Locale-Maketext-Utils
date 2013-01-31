@@ -71,11 +71,11 @@ Conceivably there could also be more subtle problems it could cause.
 
 =item Bracket Notation Error
 
-There was a problem compiling the string. 
+There was a problem compiling the string.
 
 The string is replaced with a comment that details the problem, typically including an escaped verison of the problematic string: [comment,Bracket Notation Error: DETAILS_GO_HERE]
 
-=back 
+=back
 
 =head1 possible warnings
 

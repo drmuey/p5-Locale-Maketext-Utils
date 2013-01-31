@@ -141,7 +141,7 @@ This means you have something like u"\uNNNN" and need to use the character itsel
 
 These will be turned into ‘[comment,non bytes unicode string “u"\uNNNN"”]’ (where NNNN is the Unicode code point) so you can find them visually.
 
-=back 
+=back
 
 =head1 possible warnings
 

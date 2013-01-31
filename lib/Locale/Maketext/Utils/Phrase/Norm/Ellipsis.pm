@@ -108,13 +108,13 @@ __END__
 
 =back
 
-Valid whitespace is a normal space or a non-break-space (literal (OSX: ⌥space) or via [output,nbsp]). 
+Valid whitespace is a normal space or a non-break-space (literal (OSX: ⌥space) or via [output,nbsp]).
 
 The only exception is that the initial space has to be a normal space (non-break-space there would imply formatting or partial phrase, ick).
 
 =head2 Rationale
 
-We want to be simple, consistent, and clear. 
+We want to be simple, consistent, and clear.
 
 =over 4
 
@@ -123,7 +123,7 @@ We want to be simple, consistent, and clear.
   initial:…{0}
   medial:{0}…{1}
   final:{0}…
-  
+
 Yet, English provides many more rules based on location in the text, purpose (show an omission, indicate a trailing off for various purposes), context (puntuation before or after?), and author’s whim.
 
 Some are exact opposites and yet still valid either way.
@@ -159,7 +159,7 @@ So lets keep it clear.
 Tip: If you’re doing a single word(e.g. to indicate an action is happening) you might consider doing a non-break-space to the left of it:
 
     'Loading …' # i.e. Loading(OSX: ⌥-space)…
-    
+
     'Loading[output,nbsp]…' # visually explicit
 
 =head1 possible violations
