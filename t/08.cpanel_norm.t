@@ -214,10 +214,10 @@ run_32_tests(
         'all_warnings' => {
             'special' => [
                 'multiple period/comma instead of ellipsis character',
-                'initial ellipsis needs to be preceded by a normal space',
-                'initial ellipsis needs to be followed by a normal space or a non-break-space in bracket notation or character form',
-                'final ellipsis should not be followed by anything (or by valid puncuation)',
-                'final ellipsis needs to be preceded by a normal space or a non-break-space in bracket notation or character form',
+                'initial ellipsis should be preceded by a normal space',
+                'initial ellipsis should be followed by a normal space or a non-break-space (in bracket notation or character form)',
+                'final ellipsis should be followed by a valid punctuation mark or nothing',
+                'final ellipsis should be preceded by a normal space or a non-break-space (in bracket notation or character form)',
                 'medial ellipsis should be surrounded on each side by a parenthesis or normal space or a non-break-space (in bracket notation or character form)',
             ],
             'default' => undef,    # undef means "same as special"

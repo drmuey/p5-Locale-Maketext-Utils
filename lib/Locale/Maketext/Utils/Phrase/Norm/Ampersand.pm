@@ -40,7 +40,7 @@ Do not use a raw ampersand even in output,chr. If used as text it needs to have 
 
 =head2 Rationale
 
-Same rational as the L<Markup|Locale::Maketext::Utils::Phrase::Norm::Markup/Rationale>.
+Same rationale as the L<Markup|Locale::Maketext::Utils::Phrase::Norm::Markup/Rationale>.
 
 Since & is a markup character it must be done via output() in order to be safe in all contexts.
 

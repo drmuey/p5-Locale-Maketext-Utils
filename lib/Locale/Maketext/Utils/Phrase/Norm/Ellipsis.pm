@@ -32,7 +32,7 @@ sub normalize_maketext_string {
     # }
 
     if ( ${$string_sr} =~ s/^(|\xc2\xa0|\[output\,nbsp\])…/ …/ ) {
-        $filter->add_warning('initial ellipsis needs to be preceded by a normal space');
+        $filter->add_warning('initial ellipsis should be preceded by a normal space');
     }
 
     # 1. placeholders for legit ones
@@ -53,16 +53,16 @@ sub normalize_maketext_string {
 
     # 2. mark any remaining ones (that are not legit)
     if ( ${$string_sr} =~ s/\A …(?!\x20|\xc2\xa0|\[output\,nbsp\])/ … / ) {
-        $filter->add_warning('initial ellipsis needs to be followed by a normal space or a non-break-space in bracket notation or character form');
+        $filter->add_warning('initial ellipsis should be followed by a normal space or a non-break-space (in bracket notation or character form)');
     }
 
     if ( ${$string_sr} =~ s/…(?:\x20|\xc2\xa0|\[output\,nbsp\]|\s)+\z/…/ ) {
-        $filter->add_warning('final ellipsis should not be followed by anything (or by valid puncuation)');
+        $filter->add_warning('final ellipsis should be followed by a valid punctuation mark or nothing');
     }
 
     if ( ${$string_sr} =~ m/…\z/ && ${$string_sr} !~ m/(?:\x20|\xc2\xa0|\[output\,nbsp\])…\z/ ) {
         ${$string_sr} =~ s/…$/ …/;
-        $filter->add_warning('final ellipsis needs to be preceded by a normal space or a non-break-space in bracket notation or character form');
+        $filter->add_warning('final ellipsis should be preceded by a normal space or a non-break-space (in bracket notation or character form)');
     }
 
     my $medial_prob = 0;
@@ -176,19 +176,19 @@ We want an ellipsis character instead of 3 periods (or 2 periods, 4 or 5 periods
 
 These will be turned into an ellipsis character.
 
-=item initial ellipsis needs to be preceded by a normal space
+=item initial ellipsis should be preceded by a normal space
 
 The string is modified with a corrected version.
 
-=item initial ellipsis needs to be followed by a normal space or a non-break-space in bracket notation or character form
+=item initial ellipsis should be followed by a normal space or a non-break-space (in bracket notation or character form)
 
 The string is modified with a corrected version.
 
-=item final ellipsis needs to be preceded by a normal space or a non-break-space in bracket notation or character form
+=item final ellipsis should be preceded by a normal space or a non-break-space (in bracket notation or character form)
 
 The string is modified with a corrected version.
 
-=item final ellipsis should not be followed by anything (or by valid puncuation)
+=item final ellipsis should be followed by a valid punctuation mark or nothing
 
 The string is modified with a corrected version.
 
