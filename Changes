@@ -7,6 +7,7 @@ Revision history for Perl extension Locale::Maketext::Utils.
     - Alias makevar() correctly
     - new() to new_source() in tests
     - Promote Escapes, BeginUpper, and Consider’s bare-variable check to default filters.
+    - Improve Filters’ “Normalization” and “Rationale” POD sections. (includes rt 78749 and rt 80066)
     
 0.35  Thu Aug  9 15:30:52 2012
     - rt 78871 - rename normalizing object constructors

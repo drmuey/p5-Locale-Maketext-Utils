@@ -32,9 +32,23 @@ Detect escaped character sequences.
 
 =head2 Rationale
 
-An escaped character adds ambiguity and is an indication of in-string-formatting (e.g. \n), 
-use of interpolation (which makes for hard to translate strings, could make key lookup erroneously fail, etc), 
-or use of a markup character (e.g. "You are \"awesome\".") which should be done differently (e.g. since that is will break the syntax if used in an HTML tag title attribute).
+An escaped character:
+
+=over 4
+
+=item * adds ambiguity
+
+=item * is an indication of in-string-formatting (e.g. \n)
+
+=item * relies on interpolation
+
+The additional layer of complexity could hinder translators and thus makes room for lower quality translations.
+
+Also, among other things, it could make key lookup erroneously fail.
+
+=item * Indicates use of a markup character (e.g. "You are \"awesome\".") which should be done differently (e.g. since that is will break the syntax if used in an HTML tag title attribute).
+
+=back
 
 =head1 possible violations
 

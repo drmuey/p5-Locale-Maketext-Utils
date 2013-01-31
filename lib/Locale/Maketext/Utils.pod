@@ -73,23 +73,27 @@ Alternatively, and at times more ideally, you can keep each module's aliases in 
 
 =head1 METHODS
 
-=head2 $lh->print($key, @args);
+=head2 Deprecated for clarity:
+
+These are deprecated because they are ambiguous names (i.e. used in other places by other things) and thus L<problematic when harvesting phrases|Text::Extract::MaketextCallPhrases>.
+
+=head3 $lh->print($key, @args);
 
 Shortcut for
 
     print $lh->maketext($key, @args);
 
-=head2 $lh->fetch($key, @args);
+=head3 $lh->fetch($key, @args);
 
 Alias for 
 
     $lh->maketext($key, @args);
 
-=head2 $lh->say($key, @args);
+=head3 $lh->say($key, @args);
 
 Like $lh->print($key, @args); except appends $/ || \n
 
-=head2 $lh->get($key, @args);
+=head3 $lh->get($key, @args);
 
 Like $lh->fetch($key, @args); except appends $/ || \n
 
@@ -234,9 +238,11 @@ Get the lexicon’s text of 'Your key here.' without compiling it (in other word
 
 The results are suitable for the first arg to makethis().
 
-=head3 $lh->text('Your key here.')–deprecated
+=head3 $lh->text('Your key here.')–deprecated for clarity
 
 Deprecated name of $lh->lextext().
+
+It is deprecated because it is an ambiguous name (i.e. used in other places by other things) and thus L<problematic when harvesting phrases|Text::Extract::MaketextCallPhrases>.
 
 =head2 $lh->makethis()
 

@@ -31,7 +31,15 @@ We want to make sure phrases begin correctly and consistently.
 
 =head2 Rationale
 
-Why would we want incorrect or inconsistent things?
+Correct beginning case makes the meaning clearer to end users.
+
+Clearer meaning makes it easier to make a good translation.
+
+Consistent beginning case makes it easier for developers to work with.
+
+Consistent beginning case is a sign of higher quality product.
+
+Incorrect beginning case could be a sign that partial phrases are in use or an error has been made.
 
 =head1 possible violations
 
