@@ -20,7 +20,7 @@ sub normalize_maketext_string {
 
     # 2. look for multi's
     if ( ${$string_sr} =~ s/(?:[.]{2,}|[,]{2,})/…/g ) {
-        $filter->add_violation('multiple period/comma instead of ellipsis character');
+        $filter->add_warning('multiple period/comma instead of ellipsis character');
     }
 
     # 3. restore placeholder
@@ -32,7 +32,7 @@ sub normalize_maketext_string {
     # }
 
     if ( ${$string_sr} =~ s/^(|\xc2\xa0|\[output\,nbsp\])…/ …/ ) {
-        $filter->add_violation('initial ellipsis needs to be preceded by a normal space');
+        $filter->add_warning('initial ellipsis needs to be preceded by a normal space');
     }
 
     # 1. placeholders for legit ones
@@ -53,16 +53,16 @@ sub normalize_maketext_string {
 
     # 2. mark any remaining ones (that are not legit)
     if ( ${$string_sr} =~ s/\A …(?!\x20|\xc2\xa0|\[output\,nbsp\])/ … / ) {
-        $filter->add_violation('initial ellipsis needs to be followed by a normal space or a non-break-space in bracket notation or character form');
+        $filter->add_warning('initial ellipsis needs to be followed by a normal space or a non-break-space in bracket notation or character form');
     }
 
     if ( ${$string_sr} =~ s/…(?:\x20|\xc2\xa0|\[output\,nbsp\]|\s)+\z/…/ ) {
-        $filter->add_violation('final ellipsis should not be followed by anything');
+        $filter->add_warning('final ellipsis should not be followed by anything');
     }
 
     if ( ${$string_sr} =~ m/…\z/ && ${$string_sr} !~ m/(?:\x20|\xc2\xa0|\[output\,nbsp\])…\z/ ) {
         ${$string_sr} =~ s/…$/ …/;
-        $filter->add_violation('final ellipsis needs to be preceded by a normal space or a non-break-space in bracket notation or character form');
+        $filter->add_warning('final ellipsis needs to be preceded by a normal space or a non-break-space in bracket notation or character form');
     }
 
     my $medial_prob = 0;
@@ -75,7 +75,7 @@ sub normalize_maketext_string {
     }
 
     if ($medial_prob) {
-        $filter->add_violation('medial ellipsis should be surrounded on each side by a normal space or a non-break-space in bracket notation or character form');
+        $filter->add_warning('medial ellipsis should be surrounded on each side by a normal space or a non-break-space in bracket notation or character form');
     }
 
     # 3. reconstruct the valid ones
@@ -164,6 +164,10 @@ Tip: If you’re doing a single word(e.g. to indicate an action is happening) yo
 
 =head1 possible violations
 
+None
+
+=head1 possible warnings
+
 =over 4
 
 =item multiple period/comma instead of ellipsis character
@@ -192,8 +196,4 @@ The string is modified with a corrected version.
 
 The string is modified with a corrected version.
 
-=back 
-
-=head1 possible warnings
-
-None
+=back

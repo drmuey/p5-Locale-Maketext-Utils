@@ -204,6 +204,10 @@ run_32_tests(
         'original'       => " …I… am .. bad ,,, you …e.g., foo … bar[output,nbsp]…[output,nbsp]baz … what…you…[output,nbsp]",
         'modified'       => " … I … am … bad … you … e.g., foo … bar[output,nbsp]…[output,nbsp]baz … what … you …",
         'all_violations' => {
+            'special' => [],
+            'default' => [],
+        },
+        'all_warnings'      => {
             'special' => [
                 'multiple period/comma instead of ellipsis character',
                 'initial ellipsis needs to be preceded by a normal space',
@@ -214,23 +218,14 @@ run_32_tests(
             ],
             'default' => undef,                                                                                                                     # undef means "same as special"
         },
-        'all_warnings'      => \%global_all_warnings,
-        'filter_violations' => {
-            'special' => [
-                'multiple period/comma instead of ellipsis character',
-                'initial ellipsis needs to be preceded by a normal space',
-                'initial ellipsis needs to be followed by a normal space or a non-break-space in bracket notation or character form',
-                'final ellipsis should not be followed by anything',
-                'final ellipsis needs to be preceded by a normal space or a non-break-space in bracket notation or character form',
-                'medial ellipsis should be surrounded on each side by a normal space or a non-break-space in bracket notation or character form',
-            ],
-            'default' => undef,                                                                                                                     # undef means "same as special"
-        },    # undef means "same as all_violations"
-        'filter_warnings' => \%global_filter_warnings,
+        'filter_violations' => undef,  
+        'filter_warnings' => undef,
         'return_value'    => {
-            'special' => [ 0, 6,                             0, 1 ],
+            'special' => [ -1, 0,                             6, 1 ],
             'default' => undef, # undef means "same as special"
         },
+        'get_status_is_warnings'        => 1,
+        'filter_does_not_modify_string' => 0,
         'diag' => 0,
     );
 }

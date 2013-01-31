@@ -10,6 +10,7 @@ Revision history for Perl extension Locale::Maketext::Utils.
     - Improve Filters’ “Normalization” and “Rationale” POD sections. (includes rt 78749 and rt 80066)
     - Utils.pm subset of rt 81300 and comment fixups
     - Make BeginUpper filter a warning
+    - Make Ellipsis filter a warning
     
 0.35  Thu Aug  9 15:30:52 2012
     - rt 78871 - rename normalizing object constructors
