@@ -10,7 +10,7 @@ sub normalize_maketext_string {
     if ( $filter->get_orig_str() =~ m/[<>"']/ ) {
 
         # normalize <>"' to [output,ENT]
-        
+
         # this filter could be smarter like ampersand’s 'Prefer [output,amp] over …' and 'Prefer chr(38) over …'
 
         my $string_sr = $filter->get_string_sr();

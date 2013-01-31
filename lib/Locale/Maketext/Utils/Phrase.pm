@@ -148,8 +148,8 @@ my %meth = (
     },
     'datetime' => sub {
         return 'format has no translatable components' if !$_[0]->[2]    # there is no format (FWIW, 0 is not a valid format)
-              || $_[0]->[2] =~ m/\A(?:date|time|datetime)_format_(:full|long|medium|short|default)\z/    # it is a format method name
-              || $_[0]->[2] =~ m/\A[GgyYQqMmwWdDEeaAhHKkSszZvVuLFcj]+(?:{[0-9],?([0-9])?})?\z/;          # is only CLDR Pattern codes …
+          || $_[0]->[2] =~ m/\A(?:date|time|datetime)_format_(:full|long|medium|short|default)\z/    # it is a format method name
+          || $_[0]->[2] =~ m/\A[GgyYQqMmwWdDEeaAhHKkSszZvVuLFcj]+(?:{[0-9],?([0-9])?})?\z/;          # is only CLDR Pattern codes …
 
         # … i.e. which includes values for format_for() AKA $loc->available_formats(),
         #    http://search.cpan.org/perldoc?DateTime#CLDR_Patterns says:

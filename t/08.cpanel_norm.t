@@ -204,14 +204,14 @@ run_32_tests(
 
     run_32_tests(
         'filter_name'    => 'Ellipsis',
-        'filter_pos'     => 4,                                                                                                                      # is 5 with no args to new_source()
+        'filter_pos'     => 4,                                                                                                                                    # is 5 with no args to new_source()
         'original'       => " …I… am .. bad ,,, you …e.g., foo … bar[output,nbsp]…[output,nbsp]baz … (… foo …) what…you…[output,nbsp]",
         'modified'       => " … I … am … bad … you … e.g., foo … bar[output,nbsp]…[output,nbsp]baz … (… foo …) what … you …",
         'all_violations' => {
             'special' => [],
             'default' => [],
         },
-        'all_warnings'      => {
+        'all_warnings' => {
             'special' => [
                 'multiple period/comma instead of ellipsis character',
                 'initial ellipsis needs to be preceded by a normal space',
@@ -220,17 +220,17 @@ run_32_tests(
                 'final ellipsis needs to be preceded by a normal space or a non-break-space in bracket notation or character form',
                 'medial ellipsis should be surrounded on each side by a parenthesis or normal space or a non-break-space (in bracket notation or character form)',
             ],
-            'default' => undef,                                                                                                                     # undef means "same as special"
+            'default' => undef,    # undef means "same as special"
         },
-        'filter_violations' => undef,  
-        'filter_warnings' => undef,
-        'return_value'    => {
+        'filter_violations' => undef,
+        'filter_warnings'   => undef,
+        'return_value'      => {
             'special' => [ -1, 0,                             6, 1 ],
             'default' => undef, # undef means "same as special"
         },
         'get_status_is_warnings'        => 1,
         'filter_does_not_modify_string' => 0,
-        'diag' => 0,
+        'diag'                          => 0,
     );
 }
 
@@ -243,12 +243,12 @@ run_32_tests(
         'special' => [],
         'default' => [],
     },
-    'all_warnings'      => {
+    'all_warnings' => {
         'special' => ['Does not start with an uppercase letter, ellipsis preceded by space, or bracket notation.'],
         'default' => undef,
     },
-    'filter_violations' => undef,                      # undef means "same as all_violations"
-    'filter_warnings'   =>undef,
+    'filter_violations' => undef,    # undef means "same as all_violations"
+    'filter_warnings'   => undef,
     'return_value'      => {
         'special' => [ -1, 0,                             1 ],
         'default' => undef, # undef means "same as special"

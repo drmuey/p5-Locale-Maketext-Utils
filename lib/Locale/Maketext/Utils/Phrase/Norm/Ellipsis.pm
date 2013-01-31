@@ -42,7 +42,7 @@ sub normalize_maketext_string {
         $l{'ELLIPSIS_END'} = $1;
     }
 
-    if ( ${$string_sr} =~ s/^( …(?:\x20|\xc2\xa0|\[output\,nbsp\]))/ELLIPSIS_START/ ) {    # initial
+    if ( ${$string_sr} =~ s/^( …(?:\x20|\xc2\xa0|\[output\,nbsp\]))/ELLIPSIS_START/ ) {           # initial
         $l{'ELLIPSIS_START'} = $1;
     }
 

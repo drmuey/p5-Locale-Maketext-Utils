@@ -25,6 +25,7 @@ ok( $res->get_status(), 'extra filters not applied when disabled (entire module 
 
 my $filt = $res->get_filter_results();
 is( $filt->[0]->get_status(), 1, 'entire module extra skipped' );
+
 # … then re-enable this test …
 # is( $filt->[1]->get_status(), 1, 'partial module extra skipped' );
 
@@ -37,5 +38,6 @@ is( $res->get_status(), -1, 'extra filters applied when disabled (entire module 
 
 $filt = $res->get_filter_results();
 is( $filt->[0]->get_status(), -1, 'entire module extra run' );
+
 # … and this test:
 # is( $filt->[1]->get_status(), -1, 'partial module extra run' );

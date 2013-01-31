@@ -136,10 +136,10 @@ sub init {
 
 # TODO Normalize White Space [into key form] (name? export, do meth/function or just funtion?, etc), needs POD and tests once finalized (update parser also: rt 80489)
 # sub _NWS {
-# 
+#
 #     # $lh->_NWS($str) || _NWS($str)
 #     my $string = @_ > 1 ? $_[1] : $_[0];
-# 
+#
 #     $string =~ s/\s+/ /g;
 #     $string =~ s/\A(?:\x20|\xc2\xa0)+//g;      # remove leading white space
 #     $string =~ s/(?:\x20|\xc2\xa0){2,}/ /g;    # collapse multiple internal white space
@@ -297,7 +297,7 @@ sub get_locale_display_pattern {
     # my ( $lh, $tag ) = @_;
     # $tag ||= $lh->get_language_tag();
 
-    return Locales::DB::LocaleDisplayPattern::Tiny::get_locale_display_pattern( $_[1] || $_[0]->{'fallback_locale'} || $_[0]->get_language_tag() )
+    return Locales::DB::LocaleDisplayPattern::Tiny::get_locale_display_pattern( $_[1] || $_[0]->{'fallback_locale'} || $_[0]->get_language_tag() );
 }
 
 sub get_language_tag_character_orientation {
