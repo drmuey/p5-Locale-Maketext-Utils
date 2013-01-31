@@ -38,11 +38,11 @@ sub normalize_maketext_string {
     # 1. placeholders for legit ones
     my %l;
     my $copy = ${$string_sr};
-    if ( ${$string_sr} =~ s/(\x20|\xc2\xa0|\[output\,nbsp\])…$/ELLIPSIS_END/ ) {    # final
+    if ( ${$string_sr} =~ s/((?:\x20|\xc2\xa0|\[output\,nbsp\])…[\!\?\.\:])$/ELLIPSIS_END/ ) {    # final
         $l{'ELLIPSIS_END'} = $1;
     }
 
-    if ( ${$string_sr} =~ s/^ …(\x20|\xc2\xa0|\[output\,nbsp\])/ELLIPSIS_START/ ) {    # initial
+    if ( ${$string_sr} =~ s/^( …(?:\x20|\xc2\xa0|\[output\,nbsp\]))/ELLIPSIS_START/ ) {    # initial
         $l{'ELLIPSIS_START'} = $1;
     }
 
@@ -57,7 +57,7 @@ sub normalize_maketext_string {
     }
 
     if ( ${$string_sr} =~ s/…(?:\x20|\xc2\xa0|\[output\,nbsp\]|\s)+\z/…/ ) {
-        $filter->add_warning('final ellipsis should not be followed by anything');
+        $filter->add_warning('final ellipsis should not be followed by anything (or by valid puncuation)');
     }
 
     if ( ${$string_sr} =~ m/…\z/ && ${$string_sr} !~ m/(?:\x20|\xc2\xa0|\[output\,nbsp\])…\z/ ) {
@@ -79,8 +79,8 @@ sub normalize_maketext_string {
     }
 
     # 3. reconstruct the valid ones
-    ${$string_sr} =~ s/ELLIPSIS_END/$l{'ELLIPSIS_END'}…/      if exists $l{'ELLIPSIS_END'};
-    ${$string_sr} =~ s/ELLIPSIS_START/ …$l{'ELLIPSIS_START'}/ if exists $l{'ELLIPSIS_START'};
+    ${$string_sr} =~ s/ELLIPSIS_END/$l{'ELLIPSIS_END'}/     if exists $l{'ELLIPSIS_END'};
+    ${$string_sr} =~ s/ELLIPSIS_START/$l{'ELLIPSIS_START'}/ if exists $l{'ELLIPSIS_START'};
     if ( exists $l{'ELLIPSIS_MEDIAL'} ) {
         for my $medial ( @{ $l{'ELLIPSIS_MEDIAL'} } ) {
             ${$string_sr} =~ s/ELLIPSIS_MEDIAL/$medial->[0]…$medial->[1]/;
@@ -188,7 +188,7 @@ The string is modified with a corrected version.
 
 The string is modified with a corrected version.
 
-=item final ellipsis should not be followed by anything
+=item final ellipsis should not be followed by anything (or by valid puncuation)
 
 The string is modified with a corrected version.
 

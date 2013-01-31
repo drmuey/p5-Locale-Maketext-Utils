@@ -1,4 +1,4 @@
-use Test::More tests => 543;
+use Test::More tests => 559;
 
 BEGIN {
     use_ok('Locale::Maketext::Utils::Phrase::Norm');
@@ -185,6 +185,10 @@ run_32_tests(
         ' … I am … good, you …',                                                    # normal spaces
         ' … I am … good, you …',                                                # character (OSX: ⌥space)
         ' …[output,nbsp]I am[output,nbsp]…[output,nbsp]good, you[output,nbsp]…',    # visual [output,nbsp]
+        'Foo ….',
+        'Foo …!',
+        'Foo …?',
+        'Foo …:',
       ) {
         my $valid = $ell->normalize($good);
         ok( $valid->get_status(),             "valid: RES get_status()" );
@@ -212,7 +216,7 @@ run_32_tests(
                 'multiple period/comma instead of ellipsis character',
                 'initial ellipsis needs to be preceded by a normal space',
                 'initial ellipsis needs to be followed by a normal space or a non-break-space in bracket notation or character form',
-                'final ellipsis should not be followed by anything',
+                'final ellipsis should not be followed by anything (or by valid puncuation)',
                 'final ellipsis needs to be preceded by a normal space or a non-break-space in bracket notation or character form',
                 'medial ellipsis should be surrounded on each side by a parenthesis or normal space or a non-break-space (in bracket notation or character form)',
             ],
