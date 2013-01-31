@@ -46,8 +46,8 @@ sub normalize_maketext_string {
         $l{'ELLIPSIS_START'} = $1;
     }
 
-    while ( ${$string_sr} =~ m/(\x20|\xc2\xa0|\[output\,nbsp\])…(\x20|\xc2\xa0|\[output\,nbsp\])/g ) {
-        ${$string_sr} =~ s/(\x20|\xc2\xa0|\[output\,nbsp\])…(\x20|\xc2\xa0|\[output\,nbsp\])/ELLIPSIS_MEDIAL/;
+    while ( ${$string_sr} =~ m/(\(|\x20|\xc2\xa0|\[output\,nbsp\])…(\)|\x20|\xc2\xa0|\[output\,nbsp\])/g ) {
+        ${$string_sr} =~ s/(\(|\x20|\xc2\xa0|\[output\,nbsp\])…(\)|\x20|\xc2\xa0|\[output\,nbsp\])/ELLIPSIS_MEDIAL/;
         push @{ $l{'ELLIPSIS_MEDIAL'} }, [ $1, $2 ];
     }
 
@@ -75,7 +75,7 @@ sub normalize_maketext_string {
     }
 
     if ($medial_prob) {
-        $filter->add_warning('medial ellipsis should be surrounded on each side by a normal space or a non-break-space in bracket notation or character form');
+        $filter->add_warning('medial ellipsis should be surrounded on each side by a parenthesis or normal space or a non-break-space (in bracket notation or character form)');
     }
 
     # 3. reconstruct the valid ones
@@ -192,7 +192,7 @@ The string is modified with a corrected version.
 
 The string is modified with a corrected version.
 
-=item medial ellipsis should be surrounded on each side by a normal space or a non-break-space in bracket notation or character form
+=item medial ellipsis should be surrounded on each side by a parenthesis or normal space or a non-break-space (in bracket notation or character form)
 
 The string is modified with a corrected version.
 

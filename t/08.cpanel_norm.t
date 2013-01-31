@@ -201,8 +201,8 @@ run_32_tests(
     run_32_tests(
         'filter_name'    => 'Ellipsis',
         'filter_pos'     => 4,                                                                                                                      # is 5 with no args to new_source()
-        'original'       => " …I… am .. bad ,,, you …e.g., foo … bar[output,nbsp]…[output,nbsp]baz … what…you…[output,nbsp]",
-        'modified'       => " … I … am … bad … you … e.g., foo … bar[output,nbsp]…[output,nbsp]baz … what … you …",
+        'original'       => " …I… am .. bad ,,, you …e.g., foo … bar[output,nbsp]…[output,nbsp]baz … (… foo …) what…you…[output,nbsp]",
+        'modified'       => " … I … am … bad … you … e.g., foo … bar[output,nbsp]…[output,nbsp]baz … (… foo …) what … you …",
         'all_violations' => {
             'special' => [],
             'default' => [],
@@ -214,7 +214,7 @@ run_32_tests(
                 'initial ellipsis needs to be followed by a normal space or a non-break-space in bracket notation or character form',
                 'final ellipsis should not be followed by anything',
                 'final ellipsis needs to be preceded by a normal space or a non-break-space in bracket notation or character form',
-                'medial ellipsis should be surrounded on each side by a normal space or a non-break-space in bracket notation or character form',
+                'medial ellipsis should be surrounded on each side by a parenthesis or normal space or a non-break-space (in bracket notation or character form)',
             ],
             'default' => undef,                                                                                                                     # undef means "same as special"
         },

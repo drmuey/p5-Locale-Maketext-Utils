@@ -11,6 +11,7 @@ Revision history for Perl extension Locale::Maketext::Utils.
     - Utils.pm subset of rt 81300 and comment fixups
     - Make BeginUpper filter a warning
     - Make Ellipsis filter a warning
+    - rt 81243: expand medial ellipsis check to handle being at the beginning or end of a parenthesized chunk of text
     
 0.35  Thu Aug  9 15:30:52 2012
     - rt 78871 - rename normalizing object constructors
