@@ -69,7 +69,7 @@ The only single white space characters allowed are normal space and non-break-sp
 
 =over 4
 
-=item * A tiny change in white-space[-ish] characters will make a phrase lookup fail errouneously.
+=item * A tiny change in white-space[-ish] characters will make a phrase lookup fail erroneously.
 
 =item * The only other purpose of allowing characters like this would be formatting which should not be part of a phrase.
 
