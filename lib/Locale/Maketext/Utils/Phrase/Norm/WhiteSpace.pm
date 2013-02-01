@@ -91,7 +91,7 @@ Doing internal formatting via bracket notation’s output() methods address the 
 
 =back
 
-That being the case we simplify consistently by using single space and non-break-space charcaters inside the string
+That being the case we simplify consistently by using single space and non-break-space characters inside the string
 (and the beginning if it starts with an L<ellipsis|Locale::Maketext::Utils::Phrase::Norm::Ellipsis>).
 
 =head2 possible violations
