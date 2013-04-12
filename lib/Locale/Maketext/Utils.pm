@@ -132,7 +132,7 @@ sub init {
 }
 
 # better way to alias things in an ISA package?
-*makevar = *Cpanel::CPAN::Locale::Maketext::maketext;
+*makevar = \&Cpanel::CPAN::Locale::Maketext::maketext;
 
 # TODO Normalize White Space [into key form] (name? export, do meth/function or just funtion?, etc), needs POD and tests once finalized (update parser also: rt 80489)
 # sub _NWS {

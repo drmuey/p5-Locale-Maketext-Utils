@@ -1,5 +1,9 @@
 Revision history for Perl extension Locale::Maketext::Utils.
 
+0.37  ???
+    - change makevar glob from \* to \& due to binary issues
+    - ???
+
 0.36  Mon Aug 13 12:28:55 2012
     - rt 78889 - add blurb about source/target phrases to new_source()/new_target() POD
     - Update MarkPhrase POD to reference lextext() instead of the deprecated text()
