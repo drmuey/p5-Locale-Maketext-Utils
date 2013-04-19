@@ -1,4 +1,4 @@
-use Test::More tests => 105;
+use Test::More tests => 118;
 
 BEGIN {
     chdir 't';
@@ -162,3 +162,19 @@ is( $lh->maketext( '[output,img,SRC,ALT,baz,wop,_1]', { a => 1 } ), '<img src="S
 is( $lh->maketext('[output,img,SRC,ALT,baz,wop,src,wrong,alt,wrong]'), '<img src="SRC" alt="ALT" baz="wop"/>', 'output img() - w/ arbitrary attributes - alt, src ignored' );
 is( $lh->maketext( '[output,img,SRC,ALT,baz,wop,_1]', { a => 1, src => 'wrong', alt => 'wrong' } ), '<img src="SRC" alt="ALT" baz="wop" a="1"/>', 'output img() - w/ arbitrary attributes + hash - alt, src ignored' );
 is( $lh->maketext( '[output,img,SRC,ALT,_1]', { a => 1 } ), '<img src="SRC" alt="ALT" a="1"/>', 'output img() w/ hashref' );
+
+is( $lh->maketext('[output,url,http://foo,href,FOO,bar,baz]'),        '<a bar="baz" href="http://foo">http://foo</a>', 'output,url no text: ignored href passed in' );
+is( $lh->maketext('[output,url,http://foo,IMTEXT,href,FOO,bar,baz]'), '<a bar="baz" href="http://foo">IMTEXT</a>',     'output,url w/ text: ignored href passed in' );
+
+# output,url-trailing-var ambiguity
+is( $lh->maketext( "[output,url,_1,I AM TEXT,title,imatitle,attr,_2]", "http://search.cpan.org", "what am i" ), '<a title="imatitle" attr="what am i" href="http://search.cpan.org">I AM TEXT</a>', "output,url-trailing-var ambiguity: link text end var string" );
+is( $lh->maketext( "[output,url,_1,I AM TEXT,title,imatitle,attr,imaattr,_2]", "http://search.cpan.org", { "attr_x" => "what am i" } ), '<a title="imatitle" attr="imaattr" attr_x="what am i" href="http://search.cpan.org">I AM TEXT</a>', "output,url-trailing-var ambiguity: link text end var hash" );
+is( $lh->maketext( "[output,url,_1,title,imatitle,attr,_2]", "http://search.cpan.org", "what am i" ), '<a title="imatitle" attr="what am i" href="http://search.cpan.org">http://search.cpan.org</a>', "output,url-trailing-var ambiguity: no link text end var string" );
+is( $lh->maketext( "[output,url,_1,title,imatitle,attr,imaattr,_2]", "http://search.cpan.org", { "attr_x" => "what am i" } ), '<a title="imatitle" attr="imaattr" attr_x="what am i" href="http://search.cpan.org">http://search.cpan.org</a>', "output,url-trailing-var ambiguity: no link text end var hash" );
+is( $lh->maketext( "[output,url,_1,I AM TEXT,title,imatitle,attr,val]", "http://search.cpan.org" ), '<a title="imatitle" attr="val" href="http://search.cpan.org">I AM TEXT</a>', "output,url-trailing-var ambiguity: link text end string" );
+is( $lh->maketext( "[output,url,_1,title,imatitle,attr,val]", "http://search.cpan.org" ), '<a title="imatitle" attr="val" href="http://search.cpan.org">http://search.cpan.org</a>', "output,url-trailing-var ambiguity: no link text end string" );
+is( $lh->maketext( "[output,url,_1,I AM TEXT,_2]", "http://search.cpan.org", "what am i" ), '<a I AM TEXT="what am i" href="http://search.cpan.org">http://search.cpan.org</a>', "output,url-trailing-var ambiguity: link text, end var (indicated caller mistake, pass a hash!)" );
+is( $lh->maketext( "[output,url,_1,I AM TEXT,_2]", "http://search.cpan.org", { "attr_x" => "what am i" } ), '<a attr_x="what am i" href="http://search.cpan.org">I AM TEXT</a>', "output,url-trailing-var ambiguity: link text, end hash" );
+is( $lh->maketext( "[output,url,_1,_2]", "http://search.cpan.org", "what am i" ), '<a href="http://search.cpan.org">what am i</a>', "output,url-trailing-var ambiguity: no link text, end var (indicated caller mistake, pass a hash!)" );
+is( $lh->maketext( "[output,url,_1,_2]", "http://search.cpan.org", { "attr_x" => "what am i" } ), '<a attr_x="what am i" href="http://search.cpan.org">http://search.cpan.org</a>', "output,url-trailing-var ambiguity: no link text, end hash" );
+is( $lh->maketext( "[output,url,_1,I AM TEXT]", "http://search.cpan.org", "what am i" ), '<a href="http://search.cpan.org">I AM TEXT</a>', "output,url-trailing-var ambiguity: end link test" );

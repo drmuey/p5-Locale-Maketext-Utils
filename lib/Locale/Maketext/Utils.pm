@@ -1216,6 +1216,9 @@ sub __make_attr_str_from_ar {
 
     my $idx    = 0;
     my $ar_len = @{$attr_ar};
+
+    $idx = 1 if $ar_len % 2;    # handle “Odd number of elements” …
+
     while ( $idx < $ar_len ) {
         if ( exists $strip_hr->{ $attr_ar->[$idx] } ) {
             $idx += 2;
@@ -1358,6 +1361,7 @@ sub output_url {
             [ @args, $arb_args_hr ],
             {
                 'html'  => 1,
+                'href'  => 1,
                 'plain' => 1,
                 '_type' => 1,
             }

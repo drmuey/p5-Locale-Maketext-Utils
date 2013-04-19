@@ -2,6 +2,8 @@ Revision history for Perl extension Locale::Maketext::Utils.
 
 0.37  ???
     - change makevar glob from \* to \& due to binary issues
+    - Handle output,url-with-trailing-var ambiguity
+    - Add href to ignore attribute list of output,url
     - ???
 
 0.36  Mon Aug 13 12:28:55 2012
