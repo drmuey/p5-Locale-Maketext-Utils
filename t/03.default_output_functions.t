@@ -1,4 +1,4 @@
-use Test::More tests => 118;
+use Test::More tests => 121;
 
 BEGIN {
     chdir 't';
@@ -141,12 +141,16 @@ is( $lh->maketext('[output,abbr,FoBa.,Foo Bar,baz,wop,title,wrong]'), '<abbr tit
 is( $lh->maketext( '[output,abbr,FoBa.,Foo Bar,baz,wop,_1]', { a => 1, title => 'wrong' } ), '<abbr title="Foo Bar" baz="wop" a="1">FoBa.</abbr>', 'ouput abbr() w/ arbitrary attributes + hashref - title ignored' );
 is( $lh->maketext( '[output,abbr,FoBa.,Foo Bar,_1]', { a => 1 } ), '<abbr title="Foo Bar" a="1">FoBa.</abbr>', 'ouput abbr() w/ hashref' );
 
-is( $lh->maketext('[output,acronym,FB,Foo Bar]'),         '<acronym title="Foo Bar">FB</acronym>',           'output acronym() standard' );
-is( $lh->maketext('[output,acronym,FB,Foo Bar,baz,wop]'), '<acronym title="Foo Bar" baz="wop">FB</acronym>', 'ouput acronym() w/ arbitrary attributes' );
-is( $lh->maketext( '[output,acronym,FB,Foo Bar,baz,wop,_1]', { a => 1 } ), '<acronym title="Foo Bar" baz="wop" a="1">FB</acronym>', 'ouput acronym() w/ arbitrary attributes + hashref' );
-is( $lh->maketext('[output,acronym,FB,Foo Bar,baz,wop,title,wrong]'), '<acronym title="Foo Bar" baz="wop">FB</acronym>', 'ouput acronym() w/ arbitrary attributes - title ignored' );
-is( $lh->maketext( '[output,acronym,FB,Foo Bar,baz,wop,_1]', { a => 1, title => 'wrong' } ), '<acronym title="Foo Bar" baz="wop" a="1">FB</acronym>', 'ouput acronym() w/ arbitrary attributes + hashref - title ignored' );
-is( $lh->maketext( '[output,acronym,FB,Foo Bar,_1]', { a => 1 } ), '<acronym title="Foo Bar" a="1">FB</acronym>', 'ouput acronym() w/ hashref' );
+is( $lh->maketext('[output,acronym,FB,Foo Bar]'),         '<abbr title="Foo Bar" class="initialism">FB</abbr>',           'output acronym() standard' );
+is( $lh->maketext('[output,acronym,FB,Foo Bar,baz,wop]'), '<abbr title="Foo Bar" baz="wop" class="initialism">FB</abbr>', 'ouput acronym() w/ arbitrary attributes' );
+is( $lh->maketext( '[output,acronym,FB,Foo Bar,baz,wop,_1]', { a => 1 } ), '<abbr title="Foo Bar" baz="wop" a="1" class="initialism">FB</abbr>', 'ouput acronym() w/ arbitrary attributes + hashref' );
+is( $lh->maketext('[output,acronym,FB,Foo Bar,baz,wop,title,wrong]'), '<abbr title="Foo Bar" baz="wop" class="initialism">FB</abbr>', 'ouput acronym() w/ arbitrary attributes - title ignored' );
+is( $lh->maketext( '[output,acronym,FB,Foo Bar,baz,wop,_1]', { a => 1, title => 'wrong' } ), '<abbr title="Foo Bar" baz="wop" a="1" class="initialism">FB</abbr>', 'ouput acronym() w/ arbitrary attributes + hashref - title ignored' );
+is( $lh->maketext( '[output,acronym,FB,Foo Bar,_1]', { a => 1 } ), '<abbr title="Foo Bar" a="1" class="initialism">FB</abbr>', 'ouput acronym() w/ hashref' );
+
+is( $lh->maketext('[output,acronym,FB,Foo Bar,class,fiddle]'), '<abbr title="Foo Bar" class="initialism fiddle">FB</abbr>', 'ouput acronym() does initialism class on arb arg' );
+is( $lh->maketext( '[output,acronym,FB,Foo Bar,_1]', { class => "faddle" } ), '<abbr title="Foo Bar" class="initialism faddle">FB</abbr>', 'ouput acronym() does initialism class on arb args and arb hash' );
+is( $lh->maketext( '[output,acronym,FB,Foo Bar,class,fiddle,_1]', { class => "faddle" } ), '<abbr title="Foo Bar" class="initialism fiddle" class="initialism faddle">FB</abbr>', 'ouput acronym() does initialism class w/ both arb args and arb hash' );
 
 is( $lh->maketext('[output,underline,Foo Bar]'),         '<span style="text-decoration: underline">Foo Bar</span>',           'output inline() standard' );
 is( $lh->maketext('[output,underline,Foo Bar,baz,wop]'), '<span style="text-decoration: underline" baz="wop">Foo Bar</span>', 'ouput underline() w/ arbitrary attributes' );

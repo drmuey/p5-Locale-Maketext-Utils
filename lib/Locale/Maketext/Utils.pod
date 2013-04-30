@@ -780,6 +780,10 @@ Takes 2 arguments: the abbreviated form and the non-abbreviated form.
 
 Supports L</"Arbitrary name/value attribute list"> except 'title' which will be ignored if given.
 
+Best for truncation type abbreviations. (Mnemonic: abbr is a truncated word itself)
+
+If you want to further pin down the type of abbreviation is is you can specify a more specific class (e.g. end-clip, blend, numeronym, begin-clip, phonogram, contraction,  portmanteau, apheresis, aphesis, etc).
+
 =item * acronym()
 
 Takes 2 arguments: the acronym and what it stands for. 
@@ -787,6 +791,14 @@ Takes 2 arguments: the acronym and what it stands for.
    [output,acronym,SCUBA,Self Contained Underwater Breathing Apparatus]
 
 Supports L</"Arbitrary name/value attribute list"> except 'title' which will be ignored if given.
+
+Best for initial type abbreviations. (Typically all caps)
+
+To be HTML5 compat it outputs <abbr> with a class of “initialism” (like bootstrap).
+
+If you want to further pin down the type of abbreviation is is you can specify a more specific class (e.g. acronym, hybrid, acrostic, alphabetism, backronym, macronym, recursive, context, composite, etc).
+
+If you do pass in a class value “initialism” is still retained.
 
 =item * sup()
 

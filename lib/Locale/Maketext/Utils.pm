@@ -63,7 +63,8 @@ sub get_locales_obj {
             ?        ( Locales->new( $lh->{'fallback_locale'} )
                   || ( $lh->{'fallback_locale'} ne substr( $lh->{'fallback_locale'}, 0, 2 ) ? Locales->new( substr( $lh->{'fallback_locale'}, 0, 2 ) ) : '' ) )
             : ''
-          ) || Locales->new('en');
+          )
+          || Locales->new('en');
     }
 
     return $lh->{'Locales.pm'}{$tag};
@@ -1205,7 +1206,7 @@ sub output_asis_for_tests {
 }
 
 sub __make_attr_str_from_ar {
-    my ( $attr_ar, $strip_hr ) = @_;
+    my ( $attr_ar, $strip_hr, $addin ) = @_;
     if ( ref($attr_ar) eq 'HASH' ) {
         $strip_hr = $attr_ar;
         $attr_ar  = [];
@@ -1219,19 +1220,38 @@ sub __make_attr_str_from_ar {
 
     $idx = 1 if $ar_len % 2;    # handle “Odd number of elements” …
 
+    my $did_addin;
+
     while ( $idx < $ar_len ) {
         if ( exists $strip_hr->{ $attr_ar->[$idx] } ) {
             $idx += 2;
             next;
         }
-        $attr .= qq{ $attr_ar->[$idx]="$attr_ar->[++$idx]"};
+        my $atr = $attr_ar->[$idx];
+        my $val = $attr_ar->[ ++$idx ];
+        if ( exists $addin->{$atr} ) {
+            $val = "$addin->{$atr} $val";
+            $did_addin->{$atr}++;
+        }
+
+        $attr .= qq{ $atr="$val"};
         $idx++;
     }
 
     if ($general_hr) {
         for my $k ( keys %{$general_hr} ) {
             next if exists $strip_hr->{$k};
+            if ( exists $addin->{$k} ) {
+                $general_hr->{$k} = "$addin->{$k} $general_hr->{$k}";
+                $did_addin->{$k}++;
+            }
             $attr .= qq{ $k="$general_hr->{$k}"};
+        }
+    }
+
+    for my $r ( keys %{$addin} ) {
+        if ( !exists $did_addin->{$r} ) {
+            $attr .= qq{ $r="$addin->{$r}"};
         }
     }
 
@@ -1283,9 +1303,11 @@ sub output_abbr {
 
 sub output_acronym {
     my ( $lh, $acronym, $full, @attrs ) = @_;
+
+    # ala bootstrap: class="initialism"
     return !$lh->context_is_html()
       ? "$acronym ($full)"
-      : qq{<acronym title="$full"} . __make_attr_str_from_ar( \@attrs, { 'title' => 1 } ) . qq{>$acronym</acronym>};
+      : qq{<abbr title="$full"} . __make_attr_str_from_ar( \@attrs, { 'title' => 1 }, { 'class' => 'initialism' } ) . qq{>$acronym</abbr>};
 }
 
 sub output_sup {
