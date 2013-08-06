@@ -34,6 +34,24 @@ sub _compile {
     };
 }
 
+# surgically alter a part of L::M::_langtag_munging() that is buggy but cannot otherwise be overridden
+no warnings 'redefine';
+*I18N::LangTags::panic_languages = sub {    # make it CLDR based instead of arbitrary
+    my (@languages) = @_;
+
+    my @tags;
+
+    for my $arg (@languages) {
+        next if substr( $arg, 0, 2 ) =~ m/i[-_]/;
+
+        my $loc = Locales->new($arg);
+        next if !$loc;
+        push @tags, $loc->get_fallback_list();
+    }
+
+    return @tags, @languages, 'en';    # same results but CLDR based instead of arbitrary (e.g. it falling back to es, whaaaa?)
+};
+
 sub get_handle {
     my ( $class, @langtags ) = @_;
 

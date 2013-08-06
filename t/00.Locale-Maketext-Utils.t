@@ -1,4 +1,4 @@
-use Test::More tests => 115;
+use Test::More tests => 116;
 use Test::Warn;
 
 BEGIN {
@@ -29,6 +29,9 @@ package TestApp::Localize::en;
 use base 'TestApp::Localize';
 
 package TestApp::Localize::en_us;
+use base 'TestApp::Localize';
+
+package TestApp::Localize::es_es;
 use base 'TestApp::Localize';
 
 package TestApp::Localize::i_default;
@@ -197,6 +200,9 @@ ok( $alias1->fetch('One Side')  eq 'I am not one sides', 'Base class make_alias'
 my $en_US = TestApp::Localize->get_handle('en-US');
 ok( $en_US->language_tag()     eq 'en-us', 'get_handle en-US' );
 ok( $en_US->get_language_tag() eq 'en_us', 'get_language_tag()' );
+
+my $fallback = TestApp::Localize->get_handle('ca');
+is( $fallback->get_language_tag(), 'es_es', 'fallback object is from CLDR not I18N::LangTags::panic_languages() (ca would be fr in this class)');
 
 my $fr = TestApp::Localize->get_handle('fr');
 {
