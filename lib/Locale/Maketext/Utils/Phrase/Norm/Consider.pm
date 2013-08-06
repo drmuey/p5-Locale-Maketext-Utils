@@ -36,7 +36,7 @@ sub normalize_maketext_string {
             # unless the “bare” bracket notation  …
             unless (
                 ( $idx == $last_idx && $before =~ m/\:(?:\x20|\xc2\xa0)/ && ( !defined $after || $after eq '' ) )    # … is a trailing '…: [_2]'
-                or ( $before !~ m/(?:\x20|\xc2\xa0)$/ && $after !~ m/^(?:\x20|\xc2\xa0)/ )                           # … is surrounded by non-whitespace already
+                or ( $before !~ m/(?:\x20|\xc2\xa0)$/  && $after !~ m/^(?:\x20|\xc2\xa0)/ )                          # … is surrounded by non-whitespace already
                 or ( $before =~ m/,(?:\x20|\xc2\xa0)$/ && $after =~ m/^,/ )                                          # … is in a comma reference
               ) {
                 ${$string_sr} =~ s/(\Q$bn\E)/“$1”/;

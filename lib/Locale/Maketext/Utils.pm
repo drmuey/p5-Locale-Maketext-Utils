@@ -36,7 +36,7 @@ sub _compile {
 
 # surgically alter a part of L::M::_langtag_munging() that is buggy but cannot otherwise be overridden
 no warnings 'redefine';
-*I18N::LangTags::panic_languages = sub {    # make it CLDR based instead of arbitrary
+*I18N::LangTags::panic_languages = sub {              # make it CLDR based instead of arbitrary
     my (@languages) = @_;
 
     my @tags;
