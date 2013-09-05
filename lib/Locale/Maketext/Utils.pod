@@ -911,6 +911,8 @@ This happens automatically if needed so you shouldn't have to call it unless you
 
 Otherwise it accepts 'html', 'ansi', or 'plain'.
 
+Returns the context that it sets it to (or an empty string if you pass in a second true argument).
+
 =item * get_context()
 
 Takes no arguments.
@@ -921,13 +923,19 @@ Returns 'html', 'ansi', or 'plain'. Calls $lh->set_context() if it has not been 
 
 Takes no arguments. Sets the contect to 'html'.
 
+Returns the context it was set to previously (or an empty string if you pass in a second true argument) on success, false otherwise.
+
 =item * set_context_ansi()
 
 Takes no arguments. Sets the contect to 'ansi'.
 
+Returns the context it was set to previously (or an empty string if you pass in a second true argument) on success, false otherwise.
+
 =item * set_context_plain()
 
 Takes no arguments. Sets the contect to 'plain'.
+
+Returns the context it was set to previously (or an empty string if you pass in a second true argument) on success, false otherwise.
 
 =item * context_is()
 

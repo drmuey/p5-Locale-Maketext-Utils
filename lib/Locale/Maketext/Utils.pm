@@ -1419,27 +1419,27 @@ sub output_url {
 #### output context methods ##
 
 sub set_context_html {
-    my ($lh) = @_;
+    my ( $lh, $empty ) = @_;
     my $cur = $lh->get_context();
     $lh->set_context('html');
     return if !$lh->context_is_html();
-    return $cur;
+    return $empty ? '' : $cur;
 }
 
 sub set_context_ansi {
-    my ($lh) = @_;
+    my ( $lh, $empty ) = @_;
     my $cur = $lh->get_context();
     $lh->set_context('ansi');
     return if !$lh->context_is_ansi();
-    return $cur;
+    return $empty ? '' : $cur;
 }
 
 sub set_context_plain {
-    my ($lh) = @_;
+    my ( $lh, $empty ) = @_;
     my $cur = $lh->get_context();
     $lh->set_context('plain');
     return if !$lh->context_is_plain();
-    return $cur;
+    return $empty ? '' : $cur;
 }
 
 my %contexts = (
@@ -1449,7 +1449,7 @@ my %contexts = (
 );
 
 sub set_context {
-    my ( $lh, $context ) = @_;
+    my ( $lh, $context, $empty ) = @_;
 
     if ( !$context ) {
         require IO::Interactive::Tiny;
@@ -1464,6 +1464,11 @@ sub set_context {
         Carp::carp("Given context '$context' is unknown.");
         $lh->{'-t-STDIN'} = $context;
     }
+
+    return
+        $empty                     ? ''
+      : exists $contexts{$context} ? $context
+      :                              $lh->{'-t-STDIN'};
 }
 
 sub context_is_html {
@@ -1490,8 +1495,8 @@ sub get_context {
     }
 
     return 'plain' if !defined $lh->{'-t-STDIN'};
-    return 'ansi'  if $lh->{'-t-STDIN'};
-    return 'html'  if !$lh->{'-t-STDIN'};
+    return 'ansi'  if $lh->{'-t-STDIN'} eq "1";
+    return 'html'  if $lh->{'-t-STDIN'} eq "0";
 
     # We don't carp "Given context '...' is unknown." here since we assume if they explicitly set it then they have a good reason to.
     # If it was an accident the set_contex() will have carp()'d already, if they set the variable directly then they're doing it wrong ;)

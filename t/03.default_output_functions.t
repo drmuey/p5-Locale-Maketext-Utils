@@ -1,4 +1,5 @@
-use Test::More tests => 121;
+use Test::More tests => 164;
+use Test::Warn;
 
 BEGIN {
     chdir 't';
@@ -182,3 +183,61 @@ is( $lh->maketext( "[output,url,_1,I AM TEXT,_2]", "http://search.cpan.org", { "
 is( $lh->maketext( "[output,url,_1,_2]", "http://search.cpan.org", "what am i" ), '<a href="http://search.cpan.org">what am i</a>', "output,url-trailing-var ambiguity: no link text, end var (indicated caller mistake, pass a hash!)" );
 is( $lh->maketext( "[output,url,_1,_2]", "http://search.cpan.org", { "attr_x" => "what am i" } ), '<a attr_x="what am i" href="http://search.cpan.org">http://search.cpan.org</a>', "output,url-trailing-var ambiguity: no link text, end hash" );
 is( $lh->maketext( "[output,url,_1,I AM TEXT]", "http://search.cpan.org", "what am i" ), '<a href="http://search.cpan.org">I AM TEXT</a>', "output,url-trailing-var ambiguity: end link test" );
+
+#### context ##
+
+delete $lh->{'-t-STDIN'};
+like( $lh->get_context(), qr/(?:html|ansi|plain)/, 'get_context() returns context' );
+ok( exists $lh->{'-t-STDIN'}, 'get_context() sets context if needed' );
+
+for my $type ( qw(html ansi plain), "xustom-$$" ) {
+    my $set = sub {
+        is( $lh->set_context($type), $type, "set_context($type) returns context" );
+        is( $lh->set_context( $type, 1 ), '', "set_context($type,1) returns empty string" );
+    };
+
+    if ( $type eq "xustom-$$" ) {
+        warnings_like { $set->() }[ qr/Given context .* is unknown/, qr/Given context .* is unknown/ ], "Unknown context throws warning";
+    }
+    else {
+        $set->();
+    }
+
+    is( $lh->get_context(), $type, "get_context() returns $type" );
+    ok( $lh->context_is($type), "context_is($type) returns true under $type" );
+
+    for my $xtype (qw(html ansi plain)) {
+        my $meth = "context_is_$xtype";
+        if ( $type eq $xtype ) {
+            ok( $lh->$meth(), "$meth() returns true under $type" );
+        }
+        else {
+            ok( !$lh->$meth(), "$meth() returns false under $type" );
+        }
+    }
+
+    for my $xype ( sort keys %contextx ) {
+        next if $xype eq $type;
+        ok( !$lh->context_is($xype), "context_is($xype) returns false under $type" );
+    }
+}
+
+is( $lh->set_context_html(), "xustom-$$", 'set_context_html() returns previous context' );
+ok( $lh->context_is('html'), 'set_context_html() sets context to html' );
+
+is( $lh->set_context_ansi(), 'html', 'set_context_ansi() returns previous context' );
+ok( $lh->context_is('ansi'), 'set_context_ansi() sets context to ansi' );
+
+is( $lh->set_context_plain(), 'ansi', 'set_context_plain() returns previous context' );
+ok( $lh->context_is('plain'), 'set_context_plain() sets context to plain' );
+
+$lh->set_context('plain');
+is( $lh->maketext_html_context('X [output,strong,Y] z.'), 'X <strong>Y</strong> z.', 'maketext_html_context() does html context' );
+is( $lh->get_context(), 'plain', 'maketext_html_context() does not reset context' );
+
+is( $lh->maketext_ansi_context('X [output,strong,Y] z.'), "X \e[1mY\e[0m z.", 'maketext_ansi_context() does ansi context' );
+is( $lh->get_context(),                                   'plain',            'maketext_ansi_context() does not reset context' );
+
+$lh->set_context('html');
+is( $lh->maketext_plain_context('X [output,strong,Y] z.'), 'X Y z.', 'maketext_plain_context() does plain context' );
+is( $lh->get_context(),                                    'html',   'maketext_plain_context() does not reset context' );
