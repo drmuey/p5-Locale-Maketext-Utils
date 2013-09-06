@@ -1452,8 +1452,14 @@ sub set_context {
     my ( $lh, $context, $empty ) = @_;
 
     if ( !$context ) {
-        require IO::Interactive::Tiny;
-        $lh->{'-t-STDIN'} = IO::Interactive::Tiny::is_interactive() ? 1 : 0;
+        require Web::Detect;
+        if ( Web::Detect::detect_web_fast() ) {
+            $lh->{'-t-STDIN'} = 0;
+        }
+        else {
+            require IO::Interactive::Tiny;
+            $lh->{'-t-STDIN'} = IO::Interactive::Tiny::is_interactive() ? 1 : undef();
+        }
     }
     elsif ( exists $contexts{$context} ) {
         $lh->{'-t-STDIN'} = $contexts{$context};

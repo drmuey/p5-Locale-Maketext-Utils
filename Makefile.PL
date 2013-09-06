@@ -11,6 +11,7 @@ WriteMakefile(
         'DateTime'              => 0,
         'Net::LibIDN'           => 0,
         'IO::Interactive::Tiny' => 0,
+        'Web::Detect'           => 0.04,
         'Module::Want'          => 0,
         'Encode'                => 0,
         'Test::More'            => 0,

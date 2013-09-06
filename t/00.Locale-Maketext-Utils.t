@@ -223,13 +223,17 @@ my $fr = TestApp::Localize->get_handle('fr');
 
 ok( $fr->language_tag() eq 'fr',                  'get_handle fr' );
 ok( $fr->get_base_class() eq 'TestApp::Localize', 'get_base_class()' );
-is( $fr->fetch('Hello World'), '<strong>Bonjour</strong> Monde', 'fetch() method' );
+{
+    local $fr->{'-t-STDIN'} = 0;
+    is( $fr->fetch('Hello World'), '<strong>Bonjour</strong> Monde', 'fetch() method' );
+}
 ok( $fr->{'numf_comma'} eq '1', 'init set value ok' );
 
 # safe to assume print() will work to if fetch() does...
 
 {
-    local $/ = "\n";                                                                                           # just to be sure we're testing consistently...
+    local $/ = "\n";               # just to be sure we're testing consistently …
+    local $fr->{'-t-STDIN'} = 0;
     is( $fr->get('Hello World'), "<strong>Bonjour</strong> Monde\n", 'get() method' );
 
     # safe to assume say() will work to if get() does...
