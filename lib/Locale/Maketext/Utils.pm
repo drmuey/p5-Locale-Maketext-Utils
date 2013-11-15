@@ -907,6 +907,7 @@ sub datetime {
         }
     }
 
+    $format = '' if !defined $format;
     return $dt->format_cldr( $dt->{'locale'}->format_for($format) || $format || $dt->{'locale'}->date_format_long() );
 }
 
@@ -1472,9 +1473,9 @@ sub set_context {
     }
 
     return
-        $empty                     ? ''
-      : exists $contexts{$context} ? $context
-      :                              $lh->{'-t-STDIN'};
+        $empty ? ''
+      : defined $context && exists $contexts{$context} ? $context
+      :                                                  $lh->{'-t-STDIN'};
 }
 
 sub context_is_html {

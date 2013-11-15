@@ -1,4 +1,4 @@
-use Test::More tests => 559;
+use Test::More tests => 610;
 
 BEGIN {
     use_ok('Locale::Maketext::Utils::Phrase::Norm');
@@ -575,7 +575,58 @@ ok( !$valid->filters_modify_string(), "valid end …: RES filters_modify_string(
 is( $valid->get_warning_count(),   0, "valid end …: RES get_warning_count()" );
 is( $valid->get_violation_count(), 0, "valid end …: RES get_violation_count()" );
 
+# specific case test #
+my %test_case = (
+    '“[_1]” is blah blah blah.' => 'allow for beginning quoted value',
+    'X [_1]’s Z.'                 => 'allow BV-apostrophe-s',
+    'X ([_1]) Y.'                   => 'parens BV',
+    'X (Y [_1]) Z.'                 => 'parens end BV',
+    'X ([_1] Y) Z.'                 => 'parens start BV',
+);
+for my $str ( sort keys %test_case ) {
+    $valid = $norm->normalize($str);
+    ok( $valid->get_status(),             "valid ($test_case{$str}): RES get_status()" );
+    ok( !$valid->filters_modify_string(), "valid ($test_case{$str}): RES filters_modify_string()" );
+    is( $valid->get_warning_count(),   0, "valid ($test_case{$str}): RES get_warning_count()" );
+    is( $valid->get_violation_count(), 0, "valid ($test_case{$str}): RES get_violation_count()" );
+}
+
+my %bv_case = (
+    'X ( [_1]) Z.'  => 'parens BV w/ space before',
+    'X ([_1] ) Z.'  => 'parens BV w/ space after',
+    'X ( [_1] ) Z.' => 'parens BV w/ space both',
+    '[_1]x Y.'      => 'begin w/ immediate letter after',
+    'W x[_1]x Y.'   => 'surrounding immediate letter',
+    'W x[_1]'       => 'end w/ immediate letter before',
+);
+for my $bv ( sort keys %bv_case ) {
+    $valid = $norm->normalize($bv);
+    is( $valid->get_status(), "-1", "invalid ($bv_case{$bv}): RES get_status()" );
+    ok( $valid->filters_modify_string(), "invalid ($bv_case{$bv}): RES filters_modify_string()" );
+    is( $valid->get_warning_count(),   1, "invalid ($bv_case{$bv}): RES get_warning_count()" );
+    is( $valid->get_violation_count(), 0, "invalid ($bv_case{$bv}): RES get_violation_count()" );
+}
+
+ok( Locale::Maketext::Utils::Phrase::Norm::EndPunc::__is_title_case('Click to View'),                               'title case: spec yes 1' );
+ok( Locale::Maketext::Utils::Phrase::Norm::EndPunc::__is_title_case('Preview x4 Alpha'),                            'spec yes 2' );
+ok( Locale::Maketext::Utils::Phrase::Norm::EndPunc::__is_title_case('Buy [asis,aCme™] Products'),                 'lc via asis' );
+ok( Locale::Maketext::Utils::Phrase::Norm::EndPunc::__is_title_case('Coders [comment,isa-prepostion-yo]for Peace'), 'lc vianon-WS comment' );
+
+ok( !Locale::Maketext::Utils::Phrase::Norm::EndPunc::__is_title_case('Faster load times'), 'title case: spec no 1' );
+ok( !Locale::Maketext::Utils::Phrase::Norm::EndPunc::__is_title_case('Last login from'),   'title case: spec no 2' );
+
+{
+    my @w;
+    local $SIG{__WARN__} = sub { push @w, \@_; };
+    $norm->normalize('[_1] X.');    # uninit value $begin
+    $norm->normalize('Y[_1]');      # uninit value $after
+    warn "foo\n";
+    is_deeply( \@w, [ ["foo\n"] ], 'uninit value $begin/$end does not happen' );
+}
+
+#################
 #### functions ##
+#################
 
 sub run_32_tests {
     my %args = @_;

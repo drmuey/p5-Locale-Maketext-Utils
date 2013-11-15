@@ -1,4 +1,4 @@
-use Test::More tests => 164;
+use Test::More tests => 173;
 use Test::Warn;
 
 BEGIN {
@@ -7,6 +7,8 @@ BEGIN {
     use_ok('Locale::Maketext::Utils');
     use_ok('MyTestLocale');
 }
+
+my %context = ( 'plain' => '', 'ansi' => '', 'html' => '' );
 
 my $lh = MyTestLocale->get_handle('en');
 
@@ -216,7 +218,7 @@ for my $type ( qw(html ansi plain), "xustom-$$" ) {
         }
     }
 
-    for my $xype ( sort keys %contextx ) {
+    for my $xype ( sort keys %context ) {
         next if $xype eq $type;
         ok( !$lh->context_is($xype), "context_is($xype) returns false under $type" );
     }

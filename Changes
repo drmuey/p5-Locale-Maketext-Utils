@@ -10,6 +10,15 @@ Revision history for Perl extension Locale::Maketext::Utils.
         - add empty RV support to all set_context methods
         - more context tests
     - Make context detection smarter via Web::Detect
+    - filter spiff ups:
+        - added pod to begin/end checks suggesting [comment]/[asis] as a possible solution
+        - bare vars:
+            - allow for beginning quoted value: “[_1]” is blah blah blah.
+            - allow for bare-var’s
+            - kill needless uninit value warnings
+            - do not consider BV at the beginning or end of a parenthesized chunk of text to be bare
+            - consider BV immediately next to alphanumeric to be bare var still
+            - title case fix && end not extra
     - ???
 
 0.36  Mon Aug 13 12:28:55 2012
