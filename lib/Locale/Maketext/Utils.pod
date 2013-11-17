@@ -704,6 +704,8 @@ It won't look right in a terminal (e.g. Click here (http://….) for the documen
 
 Supports L</"Arbitrary name/value attribute list">.
 
+The display text (whether from arg (i.e. simple form) or from “html” or “plain” keys) can have embedded methods.
+
 =item * chr()
 
 Output the character represented by the given number. It is a wrapper around perl's built-in L<chr> function that also encodes the value into the handle's encoding if it's over 127, and outputs as appropriate for the UI.

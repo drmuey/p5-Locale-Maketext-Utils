@@ -19,6 +19,8 @@ Revision history for Perl extension Locale::Maketext::Utils.
             - do not consider BV at the beginning or end of a parenthesized chunk of text to be bare
             - consider BV immediately next to alphanumeric to be bare var still
             - title case fix && end not extra
+    - support emb methods in output URL link text
+        - add url emb to display text that does not come from html or plain keys
     - ???
 
 0.36  Mon Aug 13 12:28:55 2012

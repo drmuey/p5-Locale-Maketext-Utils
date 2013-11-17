@@ -1,4 +1,4 @@
-use Test::More tests => 173;
+use Test::More tests => 177;
 use Test::Warn;
 
 BEGIN {
@@ -57,6 +57,16 @@ is(
     'You must go IMG to URL to complete your registration.',
     'embedded args in output,url’s “html” and “plain” values'
 );
+is(
+    $lh->maketext( 'X [output,url,_1,I chr(38) Z] A.', 'URL' ),
+    'X I & Z (URL) A.',
+    'embedded methods in output,url’s simple form'
+);
+is(
+    $lh->maketext( 'X [output,url,_1,html,Y chr(38) Z,plain,W chr(38) Z] A.', 'URL' ),
+    'X W & Z URL A.',
+    'embedded methods in output,url’s “html” and “plain” values'
+);
 
 # TODO: "# arbitrary attribute key/value args" tests in non-HTML context
 
@@ -94,6 +104,17 @@ is(
     'You must <a href="URL">click on IMG</a> to complete your registration.',
     'embedded args in output,url’s “html” and “plain” values'
 );
+is(
+    $lh->maketext( 'X [output,url,_1,html,Y chr(38) Z,plain,W chr(38) Z] A.', 'URL' ),
+    'X <a href="URL">Y &amp; Z</a> A.',
+    'embedded methods in output,url’s “html” and “plain” values'
+);
+is(
+    $lh->maketext( 'X [output,url,_1,I chr(38) Z] A.', 'URL' ),
+    'X <a href="URL">I &amp; Z</a> A.',
+    'embedded methods in output,url’s simple form'
+);
+
 is(
     $lh->maketext('Y [output,strong,Hellosub(Z)Qsup(Y)Qchr(42)Qnumf(1)] Z'),
     'Y <strong>Hello<sub>Z</sub>Q<sup>Y</sup>Q*Q1</strong> Z',

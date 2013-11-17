@@ -1070,6 +1070,8 @@ sub boolean {
 
 sub __proc_string_with_embedded_under_vars {
     my $str = $_[0];
+    return if !defined $str;
+
     return $str if $str !~ m/\_(\-?[0-9]+)/;
     my @args = __caller_args( $_[1] );    # this way be dragons
     $str =~ s/\_(\-?[0-9]+)/$args[$1]/g;
@@ -1084,13 +1086,23 @@ sub __caller_args {
     return @DB::args;
 }
 
+sub __proc_emb_meth {
+    my ( $lh, $str ) = @_;
+
+    return if !defined $str;
+
+    $str =~ s/(su[bp])\(((?:\\\)|[^\)])+?)\)/my $s=$2;my $m="output_$1";$s=~s{\\\)}{\)}g;$lh->$m($s)/eg;
+    $str =~ s/chr\(((?:\d+|[\S]))\)/$lh->output_chr($1)/eg;
+    $str =~ s/numf\((\d+(?:\.\d+)?)\)/$lh->numf($1)/eg;
+
+    return $str;
+}
+
 sub output {
     my ( $lh, $output_function, $string, @output_function_args ) = @_;
 
     if ( defined $string && $string ne '' && $string =~ tr/(// ) {
-        $string =~ s/(su[bp])\(((?:\\\)|[^\)])+?)\)/my $s=$2;my $m="output_$1";$s=~s{\\\)}{\)}g;$lh->$m($s)/eg;
-        $string =~ s/chr\(((?:\d+|[\S]))\)/$lh->output_chr($1)/eg;
-        $string =~ s/numf\((\d+(?:\.\d+)?)\)/$lh->numf($1)/eg;
+        $string = __proc_emb_meth( $lh, $string );
     }
 
     if ( my $cr = $lh->can( 'output_' . $output_function ) ) {
@@ -1381,19 +1393,29 @@ sub output_url {
 
     if ( !$lh->context_is_html() ) {
         if ($url_text) {
+            $url_text = __proc_emb_meth( $lh, $url_text );
+            $url_text = __proc_string_with_embedded_under_vars( $url_text, 1 );
             return "$url_text ($url)";
         }
 
         if ( exists $output_config{'plain'} ) {
             $output_config{'plain'} ||= $url;
             my $orig = $output_config{'plain'};
+            $output_config{'plain'} = __proc_emb_meth( $lh, $output_config{'plain'} );
             $output_config{'plain'} = __proc_string_with_embedded_under_vars( $output_config{'plain'}, 1 );
+
             $return = $orig ne $output_config{'plain'} && $output_config{'plain'} =~ m/\Q$url\E/ ? $output_config{'plain'} : "$output_config{'plain'} $url";
         }
     }
     else {
         if ( exists $output_config{'html'} ) {
+            $output_config{'html'} = __proc_emb_meth( $lh, $output_config{'html'} );
             $output_config{'html'} = __proc_string_with_embedded_under_vars( $output_config{'html'}, 1 );
+        }
+
+        if ( !$output_config{'html'} ) {
+            $url_text = __proc_emb_meth( $lh, $url_text );
+            $url_text = __proc_string_with_embedded_under_vars( $url_text, 1 );
         }
 
         $output_config{'html'} ||= $url_text || $url;
