@@ -1,4 +1,4 @@
-use Test::More tests => 116;
+use Test::More tests => 119;
 use Test::Warn;
 
 BEGIN {
@@ -481,6 +481,10 @@ like( $en->format_bytes( 2796553, 3 ), qr/2.\d{3} MB/, 'format_bytes() bytes ar
 # for my $ws ( sort keys %ws_spiff ) {
 #     is( Locale::Maketext::Utils::__WS($ws), $ws_spiff{$ws}{'expect'}, "__WS: $ws_spiff{$ws}{'name'}" );
 # }
+
+is( $en->makevar( "I am “[_1]”.", 'bob' ), 'I am “bob”.', 'makevar() maketext()s' );
+is( $en->makevar( [ "I am “[_1]”.", 'bob' ] ), 'I am “bob”.', 'makevar() maketext()s array ref (only arg)' );
+like( $en->makevar( ["I am “[_1]”."], 'bob' ), qr/^ARRAY/, 'makevar() does not maketext() array ref when there are more args' );
 
 # cleanup
 unlink "$dir/TestApp/Localize/it.pm";

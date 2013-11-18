@@ -150,8 +150,11 @@ sub init {
     );
 }
 
-# better way to alias things in an ISA package?
-*makevar = \&Cpanel::CPAN::Locale::Maketext::maketext;
+sub makevar {
+    my ( $lh, $phrase, @args ) = @_;
+    @_ = ( $lh, @{$phrase} ) if !@args && ref($phrase) eq 'ARRAY';    # Feature per rt 85588
+    goto &Locale::Maketext::maketext;
+}
 
 # TODO Normalize White Space [into key form] (name? export, do meth/function or just funtion?, etc), needs POD and tests once finalized (update parser also: rt 80489)
 # sub _NWS {

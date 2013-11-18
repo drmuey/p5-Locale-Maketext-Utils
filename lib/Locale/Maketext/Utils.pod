@@ -276,6 +276,24 @@ However if we do that like this:
 
 Then the parser can simply ignore the call to makevar() and find the value it is interested in via translatable()
 
+Additionally, since makevar() is meant to work with variables it also has the distinction of taking an array ref, as its only arg, that contains the arguments you’d normally pass to make*().
+
+This makes it easier/possible to do something like this:
+
+    $locale->makevar(@mystuff)
+
+in, say, Template Toolkit syntax.
+
+For example, if 'api_mt_result' is [ 'You have [quant,_1,user,users].', 42 ] you could do:
+
+    [% locale.makevar(api_mt_result) %]
+
+instead of something hacky and convoluted like:
+
+    [%- SET item_list = [] -%]
+    [%- FOREACH i IN api_mt_result; item_list.push(i.json); END -%]
+    [% '\[% locale.makevar(' _ item_list.join(", ") _ ') %\]' | evaltt %]
+
 =head2 $lh->get_asset()
 
 Helps you find an asset for a locale based on the locale's fallback.

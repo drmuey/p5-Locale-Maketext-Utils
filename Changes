@@ -21,6 +21,7 @@ Revision history for Perl extension Locale::Maketext::Utils.
             - title case fix && end not extra
     - support emb methods in output URL link text
         - add url emb to display text that does not come from html or plain keys
+    - rt 85588 - makevar() should also, alternatively, accept an array ref (i.e. for easier use in TT)
     - ???
 
 0.36  Mon Aug 13 12:28:55 2012
