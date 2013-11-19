@@ -18,7 +18,6 @@ our %global_filter_warnings = (
 );
 
 {
-
     # need to skip BeginUpper and EndPunc since it bumps 1 value in one test but not the others. Also Ellipsis so we don't have to factor in an extra change
     local $norm = Locale::Maketext::Utils::Phrase::Norm->new_source( qw(NonBytesStr WhiteSpace Grapheme Ampersand Markup Escapes), { 'run_extra_filters' => 1, 'skip_defaults_when_given_filters' => 1 } );
 
@@ -376,42 +375,33 @@ run_32_tests(
 # Simple bare var
 # 32k more: for (1..1001) {
 
-# TODO: Why does the run_32_tests() below do this:
-# perl -w -Ilib t/07.phrase_norm.t
-# ok 365 - “Consider” special: FILT get_warnings()
-# # Norm.pm Consider filter
-# Use of uninitialized value in join or string at (eval 240) line 2.
-# Use of uninitialized value in join or string at (eval 240) line 2.
-# Use of uninitialized value in join or string at (eval 240) line 2.
-# Use of uninitialized value in join or string at (eval 240) line 2.
-# Use of uninitialized value in join or string at (eval 240) line 2.
-# Use of uninitialized value in join or string at (eval 240) line 2.
-# ok 366 - default: RES get_status()
-
-run_32_tests(
-    'filter_name'    => 'Consider',
-    'filter_pos'     => 8,
-    'original'       => 'X [_1] foo, [_8], [_-23] ‘[_99]’ [_*] ([_42]): [_2]',
-    'modified'       => 'X “[_1]” foo, [_8], “[_-23]” ‘[_99]’ “[_*]” ([_42]): [_2]',
-    'all_violations' => {
-        'special' => [],
-        'default' => undef,    # undef means "same as special"
-    },
-    'all_warnings' => {
-        'default' => [
-            'Bare variable can lead to ambiguous output',
-        ],
-        'special' => undef,
-    },
-    'filter_violations' => undef,    # undef means "same as all_violations"
-    'filter_warnings'   => undef,    # undef means "same as all_warnings"
-    'return_value'      => {
-        'special' => [ -1, 0,                             1, 1 ],
-        'default' => undef, # undef means "same as special"
-    },
-    'get_status_is_warnings' => 1,
-    'diag'                   => 0,
-);
+{
+    local $SIG{__WARN__} = sub { };    # [rt 76706] the funny args in this string make L::M::_compile give repeated warning of: Use of uninitialized value in join or string at (eval 240) line 2
+    run_32_tests(
+        'filter_name'    => 'Consider',
+        'filter_pos'     => 8,
+        'original'       => 'X [_1] foo, [_8], [_-23] ‘[_99]’ [_*] ([_42]): [_2]',
+        'modified'       => 'X “[_1]” foo, [_8], “[_-23]” ‘[_99]’ “[_*]” ([_42]): [_2]',
+        'all_violations' => {
+            'special' => [],
+            'default' => undef,        # undef means "same as special"
+        },
+        'all_warnings' => {
+            'default' => [
+                'Bare variable can lead to ambiguous output',
+            ],
+            'special' => undef,
+        },
+        'filter_violations' => undef,    # undef means "same as all_violations"
+        'filter_warnings'   => undef,    # undef means "same as all_warnings"
+        'return_value'      => {
+            'special' => [ -1, 0,                             1, 1 ],
+            'default' => undef, # undef means "same as special"
+        },
+        'get_status_is_warnings' => 1,
+        'diag'                   => 0,
+    );
+}
 
 # /32k more }
 
@@ -607,13 +597,15 @@ for my $bv ( sort keys %bv_case ) {
     is( $valid->get_violation_count(), 0, "invalid ($bv_case{$bv}): RES get_violation_count()" );
 }
 
-ok( Locale::Maketext::Utils::Phrase::Norm::EndPunc::__is_title_case('Click to View'),                               'title case: spec yes 1' );
-ok( Locale::Maketext::Utils::Phrase::Norm::EndPunc::__is_title_case('Preview x4 Alpha'),                            'spec yes 2' );
-ok( Locale::Maketext::Utils::Phrase::Norm::EndPunc::__is_title_case('Buy [asis,aCme™] Products'),                 'lc via asis' );
-ok( Locale::Maketext::Utils::Phrase::Norm::EndPunc::__is_title_case('Coders [comment,isa-prepostion-yo]for Peace'), 'lc vianon-WS comment' );
-
-ok( !Locale::Maketext::Utils::Phrase::Norm::EndPunc::__is_title_case('Faster load times'), 'title case: spec no 1' );
-ok( !Locale::Maketext::Utils::Phrase::Norm::EndPunc::__is_title_case('Last login from'),   'title case: spec no 2' );
+# we do odd concat below so we can blanket update the all class names when building the cPanel.pm recipe version
+my $ep_class      = 'Locale::Maketext::Utils::Phrase::' . 'Norm::EndPunc';
+my $is_title_case = $ep_class->can('__is_title_case');
+ok( $is_title_case->('Click to View'),                               'title case: spec yes 1' );
+ok( $is_title_case->('Preview x4 Alpha'),                            'spec yes 2' );
+ok( $is_title_case->('Buy [asis,aCme™] Products'),                 'lc via asis' );
+ok( $is_title_case->('Coders [comment,isa-prepostion-yo]for Peace'), 'lc vianon-WS comment' );
+ok( !$is_title_case->('Faster load times'),                          'title case: spec no 1' );
+ok( !$is_title_case->('Last login from'),                            'title case: spec no 2' );
 
 {
     my @w;
