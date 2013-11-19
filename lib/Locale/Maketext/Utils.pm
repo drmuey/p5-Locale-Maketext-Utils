@@ -1124,40 +1124,52 @@ sub output {
 }
 
 sub output_encode_puny {
-    require Net::LibIDN;
+    my ( $lh, $utf8 ) = @_;    # ? TODO or YAGNI ? accept either unicode ot utf8 string (i.e. via String::UnicodeUTF8 instead of utf8::- if so, use in output_decode_puny also)
+    return $utf8 if $utf8 =~ m/^xn--/;    # do not encode it if it is already punycode
 
-    if ( $_[1] =~ m/\@/ ) {
-        my ( $nam, $dom ) = split( /@/, $_[1], 2 );
+    require Net::IDN::Encode;
+
+    if ( $utf8 =~ m/(?:\@|\xef\xbc\xa0|\xef\xb9\xab)/ ) {    # \x{0040}, \x{FF20}, \x{FE6B}
+        my ( $nam, $dom ) = split( /(?:\@|\xef\xbc\xa0|\xef\xb9\xab)/, $utf8, 2 );
 
         # TODO: ? multiple @ signs ...
         # my ($dom,$nam) = split(/\@/,reverse($_[1]),2);
         #        $dom = reverse($dom);
         #        $nam = reverse($nam);
-        return Net::LibIDN::idn_to_ascii( $nam, 'utf-8' ) . '@' . Net::LibIDN::idn_to_ascii( $dom, 'utf-8' );
+        utf8::decode($nam);    # turn utf8 bytes into a unicode string
+        utf8::decode($dom);    # turn utf8 bytes into a unicode string
+
+        return Net::IDN::Encode::to_ascii($nam) . '@' . Net::IDN::Encode::domain_to_ascii($dom);
     }
 
-    # this will act funny if there are @ symbols:
-    return Net::LibIDN::idn_to_ascii( $_[1], 'utf-8' );
+    utf8::decode($utf8);       # turn utf8 bytes into a unicode string
+    return Net::IDN::Encode::domain_to_ascii($utf8);
 }
 
 sub output_decode_puny {
-    require Net::LibIDN;
+    my ( $lh, $puny ) = @_;
+    return $puny if $puny !~ m/^xn--/;    # do not decode it if it isn't punycode
 
-    if ( $_[1] =~ m/\@/ ) {
-        my ( $nam, $dom ) = split( /@/, $_[1], 2 );
+    require Net::IDN::Encode;
+
+    if ( $puny =~ m/\@/ ) {
+        my ( $nam, $dom ) = split( /@/, $puny, 2 );
 
         # TODO: ? multiple @ signs ...
         # my ($dom,$nam) = split(/\@/,reverse($_[1]),2);
         #        $dom = reverse($dom);
         #        $nam = reverse($nam);
-        return Net::LibIDN::idn_to_unicode( $nam, 'utf-8' ) . '@' . Net::LibIDN::idn_to_unicode( $dom, 'utf-8' );
+        my $res = Net::IDN::Encode::to_unicode($nam) . '@' . Net::IDN::Encode::domain_to_unicode($dom);
+        utf8::encode($res);    # turn unicode string back into utf8 bytes
+        return $res;
     }
 
-    # this will act funny if there are @ symbols:
-    return Net::LibIDN::idn_to_unicode( $_[1], 'utf-8' );
+    $res = Net::IDN::Encode::domain_to_unicode($puny);
+    utf8::encode($res);        # turn unicode string back into utf8 bytes
+    return $res;
 }
 
-my $has_encode;    # checking for Encode this way facilitates only checking @INC once for the module on systems that do not have Encode
+my $has_encode;                # checking for Encode this way facilitates only checking @INC once for the module on systems that do not have Encode
 
 sub output_chr {
     my ( $lh, $chr_num ) = @_;

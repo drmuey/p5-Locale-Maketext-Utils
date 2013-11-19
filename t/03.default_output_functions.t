@@ -1,4 +1,4 @@
-use Test::More tests => 177;
+use Test::More tests => 193;
 use Test::Warn;
 
 BEGIN {
@@ -11,6 +11,25 @@ BEGIN {
 my %context = ( 'plain' => '', 'ansi' => '', 'html' => '' );
 
 my $lh = MyTestLocale->get_handle('en');
+
+my $bytes = "jalape\xc3\xb1o.b\xc3\xbcrn";    # explicitly be a bytes string (jalapeño.bürn)
+my $punyd = 'xn--jalapeo-9za.xn--brn-hoa';
+
+is( $lh->output_encode_puny($bytes), $punyd, "domain: unicode to punycode" );
+is( $lh->output_encode_puny($punyd), $punyd, "domain: punycode to punycode does not re-encode" );
+is( $lh->output_decode_puny($punyd), $bytes, "domain: punycode to unicode" );
+is( $lh->output_decode_puny($bytes), $bytes, "domain: unicode to unicode does not re-encode" );
+
+my $local = "caf\xc3\xa9";                    # explicitly be a bytes string (café)
+my $punyl = "xn--caf-dma";
+for my $at_sign ( '@', "\xef\xbc\xa0", "\xef\xb9\xab" ) {
+    my $hex = unpack( "H*", $at_sign );
+    diag "Starting $at_sign ($hex)";
+    is( $lh->output_encode_puny("$local$at_sign$bytes"), "$punyl\@$punyd",       "email($at_sign): unicode to punycode" );
+    is( $lh->output_encode_puny("$punyl\@$punyd"),       "$punyl\@$punyd",       "email($at_sign): punycode to punycode does not re-encode" );
+    is( $lh->output_decode_puny("$punyl\@$punyd"),       "$local\@$bytes",       "email($at_sign): punycode to unicode" );
+    is( $lh->output_decode_puny("$local$at_sign$bytes"), "$local$at_sign$bytes", "email($at_sign): unicode to unicode does not re-encode" );
+}
 
 $lh->{'-t-STDIN'} = 1;
 is( $lh->maketext('x [output,underline,y] z'), "x \e[4my\e[0m z", 'output underline text' );

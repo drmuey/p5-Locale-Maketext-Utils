@@ -23,6 +23,8 @@ Revision history for Perl extension Locale::Maketext::Utils.
         - add url emb to display text that does not come from html or plain keys
     - rt 85588 - makevar() should also, alternatively, accept an array ref (i.e. for easier use in TT)
     - rt 76706 - silence test warnings from way deep down
+    - rt 79727 - use more readily installable punycode module
+    - update min req versions of Locale::Maketext and Locales to latest
     - ???
 
 0.36  Mon Aug 13 12:28:55 2012
