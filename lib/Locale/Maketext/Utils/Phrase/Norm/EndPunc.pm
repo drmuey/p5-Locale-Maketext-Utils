@@ -98,6 +98,8 @@ If it is titlecase and it has word longer than 2 characters that must start with
 
 =back
 
+=back
+
 =head1 Entire filter only runs under extra filter mode.
 
 See L<Locale::Maketext::Utils::Phrase::Norm/extra filters> for more details.
