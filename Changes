@@ -9,7 +9,7 @@ Revision history for Perl extension Locale::Maketext::Utils.
     - make set_context() return context (like other context methods)
         - add empty RV support to all set_context methods
         - more context tests
-    - Make context detection smarter via Web::Detect
+    - rt 79490 - Make context detection smarter via Web::Detect
     - filter spiff ups:
         - added pod to begin/end checks suggesting [comment]/[asis] as a possible solution
         - bare vars:
