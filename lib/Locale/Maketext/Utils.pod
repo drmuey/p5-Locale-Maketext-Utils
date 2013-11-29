@@ -748,9 +748,17 @@ For HTML you get 'The user <span class="highlight contrast">bob</span> was updat
 
     $lh->maketext('The ascii safe version of your domain is “[output,encode_puny,_1]”.', $domain);
 
+If the string is already punycode it will return the string as-is.
+
+If there are any problems encoding the string it will return 'Error: invalid string for punycode'.
+
 =item * decode_puny()
 
     $lh->maketext('The unicode version of your domain is “[output,decode_puny,_1]” is really cool.', $domain);
+
+If the string is not punycode it will return the string as-is.
+
+If there are any problems decoding the string it will return 'Error: invalid punycode'.
 
 =item * asis_for_tests()
 

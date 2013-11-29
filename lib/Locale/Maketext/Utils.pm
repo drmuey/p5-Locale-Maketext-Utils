@@ -1125,11 +1125,12 @@ sub output {
 
 sub output_encode_puny {
     my ( $lh, $utf8 ) = @_;    # ? TODO or YAGNI ? accept either unicode ot utf8 string (i.e. via String::UnicodeUTF8 instead of utf8::- if so, use in output_decode_puny also)
-    return $utf8 if $utf8 =~ m/^xn--/;    # do not encode it if it is already punycode
+    return $utf8 if $utf8 =~ m/xn--/;    # do not encode it if it is already punycode
 
     require Net::IDN::Encode;
 
-    if ( $utf8 =~ m/(?:\@|\xef\xbc\xa0|\xef\xb9\xab)/ ) {    # \x{0040}, \x{FF20}, \x{FE6B}
+    my $res;
+    if ( $utf8 =~ m/(?:\@|\xef\xbc\xa0|\xef\xb9\xab)/ ) {    # \x{0040}, \x{FF20}, \x{FE6B} no need for \x{E0040} right?
         my ( $nam, $dom ) = split( /(?:\@|\xef\xbc\xa0|\xef\xb9\xab)/, $utf8, 2 );
 
         # TODO: ? multiple @ signs ...
@@ -1139,19 +1140,25 @@ sub output_encode_puny {
         utf8::decode($nam);    # turn utf8 bytes into a unicode string
         utf8::decode($dom);    # turn utf8 bytes into a unicode string
 
-        return Net::IDN::Encode::to_ascii($nam) . '@' . Net::IDN::Encode::domain_to_ascii($dom);
+        eval { $res = Net::IDN::Encode::domain_to_ascii($nam) . '@' . Net::IDN::Encode::domain_to_ascii($dom); };
+        return 'Error: invalid string for punycode' if $@;
+    }
+    else {
+        utf8::decode($utf8);    # turn utf8 bytes into a unicode string
+        eval { $res = Net::IDN::Encode::domain_to_ascii($utf8); };
+        return 'Error: invalid string for punycode' if $@;
     }
 
-    utf8::decode($utf8);       # turn utf8 bytes into a unicode string
-    return Net::IDN::Encode::domain_to_ascii($utf8);
+    return $res;
 }
 
 sub output_decode_puny {
     my ( $lh, $puny ) = @_;
-    return $puny if $puny !~ m/^xn--/;    # do not decode it if it isn't punycode
+    return $puny if $puny !~ m/xn--/;    # do not decode it if it isn't punycode
 
     require Net::IDN::Encode;
 
+    my $res;
     if ( $puny =~ m/\@/ ) {
         my ( $nam, $dom ) = split( /@/, $puny, 2 );
 
@@ -1159,17 +1166,19 @@ sub output_decode_puny {
         # my ($dom,$nam) = split(/\@/,reverse($_[1]),2);
         #        $dom = reverse($dom);
         #        $nam = reverse($nam);
-        my $res = Net::IDN::Encode::to_unicode($nam) . '@' . Net::IDN::Encode::domain_to_unicode($dom);
-        utf8::encode($res);    # turn unicode string back into utf8 bytes
-        return $res;
+        eval { $res = Net::IDN::Encode::domain_to_unicode($nam) . '@' . Net::IDN::Encode::domain_to_unicode($dom); };
+        return "Error: invalid punycode" if $@;
+    }
+    else {
+        eval { $res = Net::IDN::Encode::domain_to_unicode($puny); };
+        return "Error: invalid punycode" if $@;
     }
 
-    $res = Net::IDN::Encode::domain_to_unicode($puny);
-    utf8::encode($res);        # turn unicode string back into utf8 bytes
+    utf8::encode($res);    # turn unicode string back into utf8 bytes
     return $res;
 }
 
-my $has_encode;                # checking for Encode this way facilitates only checking @INC once for the module on systems that do not have Encode
+my $has_encode;            # checking for Encode this way facilitates only checking @INC once for the module on systems that do not have Encode
 
 sub output_chr {
     my ( $lh, $chr_num ) = @_;

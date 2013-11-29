@@ -1,5 +1,8 @@
 Revision history for Perl extension Locale::Maketext::Utils.
 
+???
+    - improve punycode logic
+
 0.37  Mon Nov 18 21:50:34 2013
     - change makevar glob from \* to \& due to binary issues
     - Handle output,url-with-trailing-var ambiguity
