@@ -2,6 +2,7 @@ Revision history for Perl extension Locale::Maketext::Utils.
 
 ???
     - improve punycode logic
+    - improve makethis_base() semantics
 
 0.37  Mon Nov 18 21:50:34 2013
     - change makevar glob from \* to \& due to binary issues

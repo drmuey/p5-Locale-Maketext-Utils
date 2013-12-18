@@ -195,7 +195,7 @@ sub makethis {
 # We do this because we do not want the language semantics of $lh
 sub makethis_base {
     my ($lh) = @_;
-    $lh->{'cache'}{'makethis_base'} ||= bless( {}, $lh->get_base_class() );    # this allows to have a seperate cache of compiled phrases
+    $lh->{'cache'}{'makethis_base'} ||= $lh->get_base_class()->get_handle();    # this allows to have a seperate cache of compiled phrases (? get_handle() explicit or base_locales() (i.e. en en_us i_default || L::M->fallback_languages) ?)
     return $lh->{'cache'}{'makethis_base'}->makethis( @_[ 1 .. $#_ ] );
 }
 
