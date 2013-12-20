@@ -1,4 +1,4 @@
-use Test::More tests => 125;
+use Test::More tests => 127;
 use Test::Warn;
 
 BEGIN {
@@ -489,6 +489,13 @@ is( $fr->makethis_base( "[quant,_1,en-one,en-other,en-zero]", 0 ), 'en-zero', 'm
 
 is( $fr->makethis( "[quant,_1,en-one,en-other,en-zero]", 123456 ), '123 456 en-other', 'makethis() non-en format' );    # fr has no spec-zero so this should be fr rules
 is( $fr->makethis_base( "[quant,_1,en-one,en-other,en-zero]", 123456 ), '123,456 en-other', 'makethis_base() non-en format' );
+
+{
+    local $fr->{'cache'}{'makethis_base'} = undef;
+    local $fr->{'fallback_locale'} = "fr";
+    is( $fr->makethis( "[quant,_1,en-one,en-other,en-zero]", 123456 ), '123 456 en-other', 'makethis() w/ fallback non-en format' );    # fr has no spec-zero so this should be fr rules
+    is( $fr->makethis_base( "[quant,_1,en-one,en-other,en-zero]", 123456 ), '123 456 en-other', 'makethis_base() w/ fallback non-en format' );
+}
 
 is( $en->makevar( "I am “[_1]”.", 'bob' ), 'I am “bob”.', 'makevar() maketext()s' );
 is( $en->makevar( [ "I am “[_1]”.", 'bob' ] ), 'I am “bob”.', 'makevar() maketext()s array ref (only arg)' );
