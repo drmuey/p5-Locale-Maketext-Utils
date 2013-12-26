@@ -5,6 +5,7 @@ Revision history for Perl extension Locale::Maketext::Utils.
     - improve makethis_base() semantics
     - POD create_method
     - POD explaining internal mock object
+    - add list_and_quoted() and list_or_quoted() BN methods
 
 0.37  Mon Nov 18 21:50:34 2013
     - change makevar glob from \* to \& due to binary issues

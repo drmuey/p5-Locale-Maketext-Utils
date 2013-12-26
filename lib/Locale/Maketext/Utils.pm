@@ -809,6 +809,22 @@ sub list_or {
     $lh->{'Locales.pm'}{'_main_'}->get_list_or( map { ref($_) eq 'ARRAY' ? @{$_} : $_ } @_ );
 }
 
+sub list_and_quoted {
+    my ($lh) = @_;
+
+    $lh->{'Locales.pm'}{'_main_'} ||= $lh->get_locales_obj();
+    local $lh->{'Locales.pm'}{'_main_'}{'misc'}{'list_quote_mode'} = 'all';
+    goto &list_and;
+}
+
+sub list_or_quoted {
+    my ($lh) = @_;
+
+    $lh->{'Locales.pm'}{'_main_'} ||= $lh->get_locales_obj();
+    local $lh->{'Locales.pm'}{'_main_'}{'misc'}{'list_quote_mode'} = 'all';
+    goto &list_or;
+}
+
 sub list {
     require Carp;
     Carp::carp('list() is deprecated, use list_and() or list_or() instead');

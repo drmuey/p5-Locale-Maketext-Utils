@@ -1,4 +1,4 @@
-use Test::More tests => 127;
+use Test::More tests => 131;
 use Test::Warn;
 
 BEGIN {
@@ -500,6 +500,19 @@ is( $fr->makethis_base( "[quant,_1,en-one,en-other,en-zero]", 123456 ), '123,456
 is( $en->makevar( "I am “[_1]”.", 'bob' ), 'I am “bob”.', 'makevar() maketext()s' );
 is( $en->makevar( [ "I am “[_1]”.", 'bob' ] ), 'I am “bob”.', 'makevar() maketext()s array ref (only arg)' );
 like( $en->makevar( ["I am “[_1]”."], 'bob' ), qr/^ARRAY/, 'makevar() does not maketext() array ref when there are more args' );
+
+for my $lh ( $en, $fr ) {
+    my $loc = $lh->get_locales_obj;
+
+    is( $lh->list_and( 1, 2, 3, 4, 5, 6 ), $loc->get_list_and( 1, 2, 3, 4, 5, 6 ), "list_and() has default behavior :: $loc->{'locale'}" );
+
+    my $str;
+    {
+        local $loc->{'misc'}{'list_quote_mode'} = 'all';
+        $str = $loc->get_list_and( 1, 2, 3, 4, 5, 6 )
+    }
+    is( $lh->list_and_quoted( 1, 2, 3, 4, 5, 6 ), $str,, "list_and_quoted() has 'all' behavior :: $loc->{'locale'}" );
+}
 
 # cleanup
 unlink "$dir/TestApp/Localize/it.pm";

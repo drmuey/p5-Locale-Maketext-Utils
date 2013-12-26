@@ -438,6 +438,14 @@ See L<Locales/get_list_and()> for more information.
 
 Same as list_and but with or-lists. See L<Locales/get_list_or()> for more information and an important caveat.
 
+=head2 list_and_quoted()
+
+Like list_and() but all values are quoted via the CLDR to disambiguate them.
+
+=head2 list_or_quoted()
+
+Like list_or() but all values are quoted via the CLDR to disambiguate them.
+
 =head3 list()–deprecated
 
 Creates a phrased list "and/or" style:
