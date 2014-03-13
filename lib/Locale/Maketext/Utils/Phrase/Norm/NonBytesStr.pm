@@ -24,7 +24,7 @@ sub normalize_maketext_string {
     }
 
     #\uNNNN…
-    if ( ${$string_sr} =~ s/(?<!\[comment,unicode notation “[uU]“)(\\[uU][0-9a-fA-F]+)/[comment,unicode notation “$1”]/g ) {
+    if ( ${$string_sr} =~ s/(?<!\[comment,unicode notation “[uU]”)(\\[uU][0-9a-fA-F]+)/[comment,unicode notation “$1”]/g ) {
         $filter->add_violation('unicode code point notation (C/C++/Java style)');
     }
 
