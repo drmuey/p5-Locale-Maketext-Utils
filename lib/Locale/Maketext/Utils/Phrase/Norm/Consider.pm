@@ -159,12 +159,12 @@ He wants it to be customer.example.com, no problem update 'support_url' in %url_
 If $sum is empty or undef you get odd spacing (e.g. “was .” instead of “was.”), could lose info, (e.g. “wait, the checksum is what now?”), or change meaning completely (e.g. what if the checksum was the string “BAD”).
 
     'The checksum was .'
-    'The checksum was BAD.'
+    'The checksum was BAD.' # what! my data is corrupt ⁈
 
 That applies even if it is decorated some way:
 
     'The checksum was <code></code>.'
-    'The checksum was <code>BAD</code>.'
+    'The checksum was <code>BAD</code>.' # what my data is corrupt ⁈
 
 It promotes evil partial phrases (i.e. that are untranslatable which is sort of the opposite of localizing things no?)
 
@@ -177,10 +177,37 @@ One way to visually distinguish what you intend regardless of the value given is
 becomes:
 
    The checksum was “”.                    # It is obvious that the sum is empty
+   The checksum was “ ”.                   # It is obvious that the sum is all whitespace
    The checksum was “BAD”.                 # It is obvious that it is a string made up of B, A, and D and not a statement that the sum has a problem
    The checksum was “perfectly awesome”.   # It looks weird so someone probably will notice and ask you to fix your code
 
-Depending on what you’re doing other things might work too:
+In other words:
+
+=over 4
+
+=item I<Using “ and ” disambiguates the entire string’s intent.> No accidental or malicious meaning changes.
+
+=item  I<They also provide substance to a variable that may very well be null.>
+
+For browsers, any span-level tag which is empty is not expressed in the rendering of the page. Therefore if we wrap variable expressions in span-level DOM, the user stands a very real chance of seeing incompleteness or potentially not noticing errors at all.
+
+=item  I<Having this dis-ambiguation also assists the translator:>
+
+=over 4
+
+=item They can use whatever their locale uses without needing bracket notation (e.g. « and »).
+
+This allows for flexibility since brakcet notation is not nestable (and should not be since it isn’t a templating engine).
+
+=item When the translators see <strong> or any other wrapping element in the phrase, they will not immediately know what’s going on.
+
+=back
+
+=item I<It helps programmers make better choices.>
+
+=back
+
+I<Perhaps quotes are the wrong thing in a given instance:> Depending on what you’re doing other things might work too:
 
 =over 4
 
@@ -212,8 +239,4 @@ Depending on what you’re doing other things might work too:
 
 =head1 Checks only run under extra filter mode:
 
-=over 4
-
-=item Bare variable can lead to ambiguous output
-
-=back
+None.
