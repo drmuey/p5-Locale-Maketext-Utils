@@ -757,7 +757,7 @@ sub numf {
     # method call if we already have the Locales object that belongs to the handle's locale.
     $handle->{'Locales.pm'}{'_main_'} ||= $handle->get_locales_obj();
 
-    return $handle->{'Locales.pm'}{'_main_'}->get_formatted_decimal( $num, $max_decimal_places );
+    return $handle->{'Locales.pm'}{'_main_'}->get_formatted_decimal( $num, $max_decimal_places ) || 0;
 }
 
 #### / CLDR aware numf() w/ decimal/formatter ##

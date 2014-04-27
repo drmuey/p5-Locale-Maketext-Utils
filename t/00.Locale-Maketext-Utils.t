@@ -1,4 +1,4 @@
-use Test::More tests => 131;
+use Test::More tests => 133;
 use Test::Warn;
 
 BEGIN {
@@ -387,6 +387,12 @@ like( $en->maketext( "pi is [numf,_1,-6]",  $pi ), qr/pi is 3.14159[0-9]/, 'bn: 
 like( $en->maketext( "pi is [numf,_1,6.2]", $pi ), qr/pi is 3.14159[0-9]/, 'bn: w/ decimal' );
 
 # is( $en->maketext("pi is [numf,_1,_2]",$pi,'%.3f'), 'pi is 3.142', 'bn: w/ no numeric');
+
+is( $en->numf(),      0, 'numf no args is zero' );
+is( $en->numf(undef), 0, 'numf nundef is zero' );
+
+# uncomment once we can address the warning
+# is( $en->numf(''), 0, 'numf empty is zero' );
 
 # join
 
