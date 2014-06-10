@@ -1,4 +1,4 @@
-use Test::More tests => 17;
+use Test::More tests => 19;
 
 BEGIN {
     chdir 't';
@@ -36,6 +36,11 @@ is( $lh->get_asset( $coderef, 'pt_br' ), 'i am pt_br', 'get_asset() arg tag with
 is( $lh->get_asset( $coderef, 'pt' ),    'i am pt',    'get_asset() arg tag without super found' );
 delete $arb_asset{'pt_br'};
 is( $lh->get_asset( $coderef, 'pt_br' ), 'i am pt', 'get_asset() arg tag falls back to super' );
+
+my $ih = MyTestLocale->get_handle('i_tag');
+is( $ih->get_asset( $coderef, 'i_tag' ), 'default', 'get_asset() i_tag no asset' );
+$arb_asset{'i_tag'} = 'i robot';
+is( $ih->get_asset( $coderef, 'i_tag' ), 'i robot', 'get_asset() i_tag no asset' );
 
 skip: {
     eval 'use File::Temp ();';

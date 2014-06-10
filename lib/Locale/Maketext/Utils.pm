@@ -647,9 +647,10 @@ sub get_asset {
 
     my $loc_obj = $lh->get_locales_obj($tag);
 
+    my $root = $tag || $lh->get_language_tag;
     my $ret;
     my $loc;                                                                            # buffer
-    for $loc ( $loc_obj->get_fallback_list( $lh->{'Locales.pm'}{'get_fallback_list_special_lookup_coderef'} ) ) {
+    for $loc ( ( substr( $root, 0, 2 ) eq 'i_' ? $root : () ), $loc_obj->get_fallback_list( $lh->{'Locales.pm'}{'get_fallback_list_special_lookup_coderef'} ) ) {
 
         # allow $code to be a soft ref?
         # no strict 'refs';
