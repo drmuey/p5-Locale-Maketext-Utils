@@ -158,7 +158,6 @@ my %bn_cont = (
             'boolean',
             'is_defined',
             'is_future',
-            'url',
         )
     ),
 

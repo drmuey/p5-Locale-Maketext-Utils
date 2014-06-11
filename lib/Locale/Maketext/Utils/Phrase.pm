@@ -178,7 +178,6 @@ my %basic = (
 );
 
 my %complex = (
-    'url'        => 'should have translatable parts',
     'boolean'    => 'should have translatable parts',
     'is_defined' => 'should have translatable parts',
     'is_future'  => 'should have translatable parts',
@@ -235,6 +234,7 @@ sub _get_bn_type_from_list {
                 }
             }
 
+            # TODO: do url && factor in html/plain attr && add to t/13.phrase_object_precursor_functions.t
             if ( $list->[1] =~ m/\A(?:img|abbr|acronym)\z/ ) {
                 my %attr = _get_attr_hash_from_list( $list, 4 );
 
