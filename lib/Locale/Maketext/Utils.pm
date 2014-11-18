@@ -396,6 +396,7 @@ sub lextext {
     }
 
     $@ = $at;    # Put $@ back in case we altered it along the way.
+    return $phrase if !defined $value || $value eq '';
     return $value;
 }
 

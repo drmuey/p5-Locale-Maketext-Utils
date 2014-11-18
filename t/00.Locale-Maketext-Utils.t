@@ -1,4 +1,4 @@
-use Test::More tests => 133;
+use Test::More tests => 135;
 use Test::Warn;
 
 BEGIN {
@@ -208,7 +208,8 @@ my $fr = TestApp::Localize->get_handle('fr');
 {
     local $fr->{'use_external_lex_cache'} = 1;
 
-    is( $fr->lextext('Hello World'), '[output,strong,Bonjour] Monde', 'lextext() returns the lexicon value in uncompiled form before the compiled value is cached' );
+    is( $fr->lextext('Hello World'),                         '[output,strong,Bonjour] Monde',       'lextext() returns the lexicon value in uncompiled form before the compiled value is cached' );
+    is( $fr->lextext('Glorb GLib Glob [output,strong,Bop]'), 'Glorb GLib Glob [output,strong,Bop]', 'lextext() returns the phrase in uncompiled form when it is not in the lex' );
 
     warning_is {
         is( $fr->text('Hello World'), $fr->lextext('Hello World'), 'text() returns the same value as lextext()' );
@@ -218,7 +219,8 @@ my $fr = TestApp::Localize->get_handle('fr');
     ok( !exists $fr->{'_external_lex_cache'}{'Hello World'}, 'Sanity: phrase is not yet cached' );
     $fr->maketext('Hello World');    # cache it
     ok( exists $fr->{'_external_lex_cache'}{'Hello World'}, 'Sanity: maketext() caches compiled version' );    # make sure it is no cached
-    is( $fr->lextext('Hello World'), '[output,strong,Bonjour] Monde', 'lextext() returns the lexicon value in uncompiled form after the compiled value is cached' );
+    is( $fr->lextext('Hello World'),                         '[output,strong,Bonjour] Monde',       'lextext() returns the lexicon value in uncompiled form after the compiled value is cached' );
+    is( $fr->lextext('Glorb GLib Glob [output,strong,Bop]'), 'Glorb GLib Glob [output,strong,Bop]', 'lextext() subsequently returns the phrase in uncompiled form when it is not in the lex' );
 }
 
 ok( $fr->language_tag() eq 'fr',                  'get_handle fr' );

@@ -4,6 +4,7 @@ Revision history for Perl extension Locale::Maketext::Utils.
     - numf() return 0 on undef from CLDR
     - add i_ tags to get_asset (since they can't be had from the Locales obj)
     - TODO w/ output,url typing
+    - lextext() should return the phrase itself if not found in the lexicon
 
 0.41  Wed Jan 15 09:15:05 2014
     - Add missing dep in 0.40 test
