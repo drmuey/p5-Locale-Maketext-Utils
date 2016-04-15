@@ -1,6 +1,6 @@
 Revision history for Perl extension Locale::Maketext::Utils.
 
-0.42  ???
+0.42  Fri Apr 15 09:40:53 2016
     - numf() return 0 on undef from CLDR
     - add i_ tags to get_asset (since they can't be had from the Locales obj)
     - TODO w/ output,url typing
