@@ -132,7 +132,7 @@ sub struct_is_entirely_bracket_notation {
 sub _split_bn_cont {
     my ( $cont, $limit ) = @_;
     $limit = abs( int( $limit || 0 ) );
-    return $limit ? split( $bn_delimit, $cont, $limit ) : split( $bn_delimit, $cont );
+    return $limit ? split( $bn_delimit, $cont, $limit ) : split( $bn_delimit, $cont, -1 );
 }
 
 my %meth = (
